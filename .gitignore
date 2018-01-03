@@ -1,2 +1,4 @@
 ngl_wrap.cpp
 ngl.py
+build/*
+__pycache__/*

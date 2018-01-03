@@ -33,18 +33,18 @@
  # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.          #
  ##############################################################################
 """
-      Setup script for the NGL library
+      Setup script for pyerg, a wrapper library for the C++ implementataion of
+      the neigbhorhood graph library (NGL).
 """
 
 from distutils.core import setup, Extension
 
 FILES = ['ngl.i', 'GraphStructure.cpp', 'UnionFind.cpp']
 
-setup(name='ngl',
+setup(name='pyerg',
       version='0.1',
-      description='A library for computing neighborhood graphs',
+      description='A wrapper library for exposing the C++ neighborhood graph '
+                  + 'library (NGL) for computing empty region graphs to python',
       ext_modules=[Extension('_ngl', FILES,
                              swig_opts=['-c++'],
-                             extra_compile_args=['-std=c++11'])],
-      py_modules=['ngl'])
-      
+                             extra_compile_args=['-std=c++11'])])
