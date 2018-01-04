@@ -1,0 +1,5 @@
+include *.h *.hpp *.cpp *.i
+include *.i
+include *.md
+include *.py
+include LICENSE

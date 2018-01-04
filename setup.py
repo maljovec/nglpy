@@ -34,22 +34,23 @@
  ##############################################################################
 """
       Setup script for pyerg, a wrapper library for the C++ implementataion of
-      the neigbhorhood graph library (NGL).
+      the neighborhood graph library (NGL).
 """
 
 from distutils.core import setup, Extension
 
 FILES = ['ngl.i', 'GraphStructure.cpp', 'UnionFind.cpp']
+VERSION = '0'
 
 setup(name='pyerg',
-      packages=['pyerg'],
-      version='0.1',
+      #packages=['pyerg'],
+      version=VERSION,
       description='A wrapper library for exposing the C++ neighborhood graph '
                   + 'library (NGL) for computing empty region graphs to python',
       author = 'Dan Maljovec',
       author_email = 'maljovec002@gmail.com',
       url = 'https://github.com/maljovec/pyerg',
-      download_url = 'https://github.com/maljovec/pyerg/archive/0.1.tar.gz',
+      download_url = 'https://github.com/maljovec/pyerg/archive/'+VERSION+'.tar.gz',
       keywords = ['geometry', 'graph', 'empty region graph'],
       classifiers = [],
       ext_modules=[Extension('_ngl', FILES,
