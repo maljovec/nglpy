@@ -42,9 +42,16 @@ from distutils.core import setup, Extension
 FILES = ['ngl.i', 'GraphStructure.cpp', 'UnionFind.cpp']
 
 setup(name='pyerg',
+      packages=['pyerg'],
       version='0.1',
       description='A wrapper library for exposing the C++ neighborhood graph '
                   + 'library (NGL) for computing empty region graphs to python',
+      author = 'Dan Maljovec',
+      author_email = 'maljovec002@gmail.com',
+      url = 'https://github.com/maljovec/pyerg',
+      download_url = 'https://github.com/maljovec/pyerg/archive/0.1.tar.gz',
+      keywords = ['geometry', 'graph', 'empty region graph'],
+      classifiers = [],
       ext_modules=[Extension('_ngl', FILES,
                              swig_opts=['-c++'],
                              extra_compile_args=['-std=c++11'])])
