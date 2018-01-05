@@ -131,6 +131,12 @@ class GraphStructure
   T GetX(int i, int j);
 
   /**
+   * Returns a map where the key is the index of a point and the value is a set
+   * of indices that are connected to that index
+   */
+  std::map< int, std::set<int> > Neighbors();
+  
+  /**
    * Returns a list of indices marked as neighbors to the specified sample given
    * given by "index"
    * @param index integer specifying the unique sample queried

@@ -209,7 +209,7 @@ void GraphStructure<T>::ComputeNeighborhood(std::vector<int> &edgeIndices,
       //      useful for later queries to the data, when the user wants to ask
       //      who is near point x?
       int i2 = edges[k][i];
-      if(i2 != -1)
+      if(i2 != -1 && i != i2)
       {
         neighbors[i].insert(i2);
         neighbors[i2].insert(i);
@@ -420,6 +420,12 @@ template<typename T>
 std::set<int> GraphStructure<T>::Neighbors(int index)
 {
   return neighbors[index];
+}
+
+template<typename T>
+std::map< int, std::set<int> > GraphStructure<T>::Neighbors()
+{
+  return neighbors;
 }
 
 template class GraphStructure<double>;
