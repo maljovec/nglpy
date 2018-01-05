@@ -40,19 +40,38 @@
 from distutils.core import setup, Extension
 
 FILES = ['ngl.i', 'GraphStructure.cpp', 'UnionFind.cpp']
-VERSION = '0'
+VERSION = '0.2.2'
 
+## Consult here: https://packaging.python.org/tutorials/distributing-packages/
 setup(name='pyerg',
       #packages=['pyerg'],
       version=VERSION,
       description='A wrapper library for exposing the C++ neighborhood graph '
                   + 'library (NGL) for computing empty region graphs to python',
+      long_description='Given a set of arbitrarily arranged points in any '
+                  + 'dimension, this library is able to construct several '
+                  + 'different types of neighborhood graphs mainly focusing on '
+                  + 'empty region graph algorithms such as the beta skeleton '
+                  + 'family of graphs.',
       author = 'Dan Maljovec',
       author_email = 'maljovec002@gmail.com',
+      license = 'BSD',
       url = 'https://github.com/maljovec/pyerg',
       download_url = 'https://github.com/maljovec/pyerg/archive/'+VERSION+'.tar.gz',
-      keywords = ['geometry', 'graph', 'empty region graph'],
-      classifiers = [],
-      ext_modules=[Extension('_ngl', FILES,
+      keywords = ['geometry', 'neighborhood', 'empty region graph'],
+      ## Consult here: https://pypi.python.org/pypi?%3Aaction=list_classifiers
+      classifiers=[
+            'Development Status :: 3 - Alpha',
+            'Intended Audience :: Science/Research',
+            'License :: OSI Approved :: BSD License',
+            'Programming Language :: C++',
+            'Programming Language :: Python :: 2',
+            'Programming Language :: Python :: 3',
+            'Topic :: Scientific/Engineering :: Mathematics'
+      ],
+      install_requires=[],
+      python_requires='>=2.7, <4',
+      ext_modules=[Extension('_ngl',
+                             FILES,
                              swig_opts=['-c++'],
                              extra_compile_args=['-std=c++11'])])
