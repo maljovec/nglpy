@@ -39,8 +39,8 @@
 
 from distutils.core import setup, Extension
 
-FILES = ['ngl.i', 'GraphStructure.cpp', 'UnionFind.cpp']
-VERSION = '0.2.2'
+FILES = ['ngl_wrap.cpp', 'GraphStructure.cpp', 'UnionFind.cpp']
+VERSION = '0.2.3'
 
 ## Consult here: https://packaging.python.org/tutorials/distributing-packages/
 setup(name='pyerg',
@@ -73,5 +73,4 @@ setup(name='pyerg',
       python_requires='>=2.7, <4',
       ext_modules=[Extension('_ngl',
                              FILES,
-                             swig_opts=['-c++'],
                              extra_compile_args=['-std=c++11'])])
