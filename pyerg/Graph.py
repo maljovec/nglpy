@@ -1,7 +1,7 @@
  ##############################################################################
  # Software License Agreement (BSD License)                                   #
  #                                                                            #
- # Copyright 2014 University of Utah                                          #
+ # Copyright 2018 University of Utah                                          #
  # Scientific Computing and Imaging Institute                                 #
  # 72 S Central Campus Drive, Room 3750                                       #
  # Salt Lake City, UT 84112                                                   #
@@ -75,16 +75,21 @@ class Graph(nglGraph):
 
         super(Graph, self).__init__(vectorDouble(X.flatten()), X.shape[0], X.shape[1], graph, maxN, beta, edges)
 
-    def Neighbors(self, idx):
-        """Returns the list of neighbors associated to a particular indes in the
-        dataset.
+    def Neighbors(self, idx=None):
+        """Returns the list of neighbors associated to a particular index in the
+        dataset, if one is provided, otherwise a full dictionary is provided
+        relating each index to a set of connected indices.
 
         Args:
-            idx: The index of the point in the input data matrix for which we
-                want to retrieve neighbors.
+            idx: (optional) a single index of the point in the input data matrix
+                for which we want to retrieve neighbors.
 
         Returns:
-            A list of indices connected to the input index.
-
+            A list of indices connected to either the provided input index, or a
+            dictionary where the keys are the indices in the whole dataset and
+            the values are sets of indices connected to the key index.
         """
-        return list(super(Graph, self).Neighbors(int(idx)))
+        if idx is None:
+            return dict(super(Graph, self).Neighbors())
+        else:
+            return list(super(Graph, self).Neighbors(int(idx)))

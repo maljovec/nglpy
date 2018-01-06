@@ -1,7 +1,7 @@
  ##############################################################################
  # Software License Agreement (BSD License)                                   #
  #                                                                            #
- # Copyright 2014 University of Utah                                          #
+ # Copyright 2018 University of Utah                                          #
  # Scientific Computing and Imaging Institute                                 #
  # 72 S Central Campus Drive, Room 3750                                       #
  # Salt Lake City, UT 84112                                                   #
@@ -37,22 +37,36 @@
       the neighborhood graph library (NGL).
 """
 
-from distutils.core import setup, Extension
+from setuptools import setup, Extension
 
 FILES = ['ngl_wrap.cpp', 'GraphStructure.cpp', 'UnionFind.cpp']
-VERSION = '0.2.3'
+VERSION = '0.2.5'
+
+def long_description():
+    """ Reads the README.md file and extracts the portion tagged between
+        specific LONG_DESCRIPTION comment lines.
+    """
+    description = ''
+    recording = False
+    with open('README.md') as f:
+        for line in f:
+            if 'END_LONG_DESCRIPTION' in line:
+                return description
+            elif 'LONG_DESCRIPTION' in line:
+                recording = True
+                continue
+
+            if recording:
+                description += line
+            
 
 ## Consult here: https://packaging.python.org/tutorials/distributing-packages/
 setup(name='pyerg',
-      #packages=['pyerg'],
+      packages=['pyerg'],
       version=VERSION,
       description='A wrapper library for exposing the C++ neighborhood graph '
                   + 'library (NGL) for computing empty region graphs to python',
-      long_description='Given a set of arbitrarily arranged points in any '
-                  + 'dimension, this library is able to construct several '
-                  + 'different types of neighborhood graphs mainly focusing on '
-                  + 'empty region graph algorithms such as the beta skeleton '
-                  + 'family of graphs.',
+      long_description=long_description(),
       author = 'Dan Maljovec',
       author_email = 'maljovec002@gmail.com',
       license = 'BSD',
