@@ -423,7 +423,7 @@ std::set<int> GraphStructure<T>::Neighbors(int index)
 }
 
 template<typename T>
-std::map< int, std::set<int> > GraphStructure<T>::Neighbors()
+std::map< int, std::set<int> > GraphStructure<T>::FullGraph()
 {
   return neighbors;
 }

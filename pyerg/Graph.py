@@ -54,7 +54,7 @@ class Graph(nglGraph):
     Attributes:
         None
     """
-    def __init__(self, X, graph, maxN, beta, edges):
+    def __init__(self, X, graph, maxN, beta, edges=None):
         """Initialization of the graph object. This will convert all of the
         passed in parameters into parameters the C++ implementation of NGL
         can understand and then issue an external call to that library.
@@ -73,7 +73,13 @@ class Graph(nglGraph):
         else:
             edges = vectorInt(edges)
 
-        super(Graph, self).__init__(vectorDouble(X.flatten()), X.shape[0], X.shape[1], graph, maxN, beta, edges)
+        cols = 0
+        rows = len(X)
+        if rows > 0:
+            cols = len(X[0])
+
+        flattened_X = [xij for Xi in X for xij in Xi]
+        super(Graph, self).__init__(vectorDouble(flattened_X), rows, cols, graph, maxN, beta, edges)
 
     def Neighbors(self, idx=None):
         """Returns the list of neighbors associated to a particular index in the
@@ -90,6 +96,6 @@ class Graph(nglGraph):
             the values are sets of indices connected to the key index.
         """
         if idx is None:
-            return dict(super(Graph, self).Neighbors())
+            return dict(self.FullGraph())
         else:
             return list(super(Graph, self).Neighbors(int(idx)))

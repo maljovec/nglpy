@@ -15,4 +15,5 @@ namespace std
   %template(vectorDouble) vector<double>;
   %template(vectorInt) vector<int>;
   %template(setInt) set<int>;
+  %template(mapIntSet) map<int, set<int> >;
 }

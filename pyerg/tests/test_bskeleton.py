@@ -1,4 +1,4 @@
- ##############################################################################
+##############################################################################
  # Software License Agreement (BSD License)                                   #
  #                                                                            #
  # Copyright 2018 University of Utah                                          #
@@ -33,59 +33,80 @@
  # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.          #
  ##############################################################################
 """
-      Setup script for pyerg, a wrapper library for the C++ implementataion of
-      the neighborhood graph library (NGL).
+    This module will test the functionality of pyerg.Graph when using the
+    beta skeleton graph type
 """
+from unittest import TestCase
 
-from setuptools import setup, Extension
+import pyerg
 
-FILES = ['ngl_wrap.cpp', 'GraphStructure.cpp', 'UnionFind.cpp']
-VERSION = '0.2.5'
-
-def long_description():
-    """ Reads the README.md file and extracts the portion tagged between
-        specific LONG_DESCRIPTION comment lines.
+class TestBSkeleton(TestCase):
     """
-    description = ''
-    recording = False
-    with open('README.md') as f:
-        for line in f:
-            if 'END_LONG_DESCRIPTION' in line:
-                return description
-            elif 'LONG_DESCRIPTION' in line:
-                recording = True
-                continue
+    Class for testing the Gabriel graph
+    """
 
-            if recording:
-                description += line
-            
+    def setup(self):
+        """
+        Setup function will create a fixed point set and parameter settings for
+        testing different aspects of this library.
 
-## Consult here: https://packaging.python.org/tutorials/distributing-packages/
-setup(name='pyerg',
-      packages=['pyerg'],
-      version=VERSION,
-      description='A wrapper library for exposing the C++ neighborhood graph '
-                  + 'library (NGL) for computing empty region graphs to python',
-      long_description=long_description(),
-      author = 'Dan Maljovec',
-      author_email = 'maljovec002@gmail.com',
-      license = 'BSD',
-      test_suite='pyerg.tests',
-      url = 'https://github.com/maljovec/pyerg',
-      download_url = 'https://github.com/maljovec/pyerg/archive/'+VERSION+'.tar.gz',
-      keywords = ['geometry', 'neighborhood', 'empty region graph'],
-      ## Consult here: https://pypi.python.org/pypi?%3Aaction=list_classifiers
-      classifiers=[
-            'Development Status :: 3 - Alpha',
-            'Intended Audience :: Science/Research',
-            'License :: OSI Approved :: BSD License',
-            'Programming Language :: C++',
-            'Programming Language :: Python :: 2',
-            'Programming Language :: Python :: 3',
-            'Topic :: Scientific/Engineering :: Mathematics'
-      ],
-      install_requires=[],
-      python_requires='>=2.7, <4',
-      ext_modules=[Extension('_ngl',
-                             FILES,
-                             extra_compile_args=['-std=c++11'])])
+        Test graph shape:
+
+        3 - 2
+          /   \
+        0       1
+
+        However, the pruned edges should result in this graph:
+
+        3 - 2
+        |     \
+        0 ----- 1
+
+        """
+
+        self.points = [[0, 0], [2, 0], [1, 1], [0, 1]]
+        self.max_neighbors = 3
+        self.beta = 1
+        self.graph = 'beta skeleton'
+        self.edges = [0, 1, 0, 3, 1, 2, 1, 3, 2, 3]
+
+    def test_Neighbors(self):
+        """
+        Tests the Neighbors function in both settings, that is where an index
+        is supplied and when it is not. This does not use an input neighborhood
+        graph, thus NGL must prune the complete graph in this case.
+        """
+        self.setup()
+        graph_rep = pyerg.Graph(self.points, self.graph, self.max_neighbors, self.beta)
+        expected_graph = {0: (3, ), 1: (2, ), 2: (1, 3), 3: (0, 2)}
+
+        for i in range(len(self.points)):
+            expected = list(expected_graph[i])
+            actual = sorted(graph_rep.Neighbors(i))
+            msg = '\nNode {} Connectivity:\n\texpected: {}\n\tactual: {} '.format(i, expected, actual)
+            self.assertEqual(expected, actual, msg)
+
+        self.assertEqual(graph_rep.Neighbors(), expected_graph)
+
+    def test_Neighbors_with_edges(self):
+        """
+        Tests the Neighbors function in both settings, that is where an index
+        is supplied and when it is not. A user supplied sub-graph is used in
+        this case. Since, this sub-graph prunes valid edges, then we should see
+        those edges removed from the actual graph.
+        """
+        self.setup()
+        graph_rep = pyerg.Graph(self.points, self.graph, self.max_neighbors, self.beta, self.edges)
+
+        expected_graph = {0: (1,3), 1: (0,2), 2: (1, 3), 3: (0, 2)}
+
+        for i in range(len(self.points)):
+            expected = list(expected_graph[i])
+            actual = sorted(graph_rep.Neighbors(i))
+            msg = 'Node {} Connectivity:\n\texpected: {}\n\tactual: {} '.format(i, expected, actual)
+            self.assertEqual(expected, actual, msg)
+
+        self.assertEqual(graph_rep.Neighbors(), expected_graph)
+
+if __name__ == '__main__':
+    unittest.main()

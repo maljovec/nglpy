@@ -134,7 +134,7 @@ class GraphStructure
    * Returns a map where the key is the index of a point and the value is a set
    * of indices that are connected to that index
    */
-  std::map< int, std::set<int> > Neighbors();
+  std::map< int, std::set<int> > FullGraph();
   
   /**
    * Returns a list of indices marked as neighbors to the specified sample given
