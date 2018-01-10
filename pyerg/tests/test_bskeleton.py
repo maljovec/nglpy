@@ -52,23 +52,43 @@ class TestBSkeleton(TestCase):
 
         Test graph shape:
 
-        3 - 2
+         3----2
+             /
+            1
           /   \
-        0       1
+        0       4
 
         However, the pruned edges should result in this graph:
+expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2), 4: (1, 2)}
 
-        3 - 2
-        |     \
-        0 ----- 1
+         3----2
+          \ /  |
+           /1   |
+         //   \ |
+        0       4
+
+        The relaxed version should look like:
+
+         3----2
+         |   /
+        |   1
+        | /   \
+        0       4
 
         """
 
-        self.points = [[0, 0], [2, 0], [1, 1], [0, 1]]
+        self.points = [[0.360502, 0.535494],
+                       [0.476489, 0.560185],
+                       [0.503125, 0.601218],
+                       [0.462382, 0.666667],
+                       [0.504702, 0.5]]
         self.max_neighbors = 3
         self.beta = 1
         self.graph = 'beta skeleton'
-        self.edges = [0, 1, 0, 3, 1, 2, 1, 3, 2, 3]
+        self.edges = [0, 1, 0, 2, 0, 3, 0, 4,
+                      1, 3, 1, 4,
+                      2, 3, 2, 4,
+                      3, 4]
 
     def test_Neighbors(self):
         """
@@ -78,7 +98,7 @@ class TestBSkeleton(TestCase):
         """
         self.setup()
         graph_rep = pyerg.Graph(self.points, self.graph, self.max_neighbors, self.beta)
-        expected_graph = {0: (3, ), 1: (2, ), 2: (1, 3), 3: (0, 2)}
+        expected_graph = {0: (1, ), 1: (0, 2, 4), 2: (1, 3), 3: (2, ), 4: (1, )}
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
@@ -98,12 +118,31 @@ class TestBSkeleton(TestCase):
         self.setup()
         graph_rep = pyerg.Graph(self.points, self.graph, self.max_neighbors, self.beta, self.edges)
 
-        expected_graph = {0: (1,3), 1: (0,2), 2: (1, 3), 3: (0, 2)}
+        expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2), 4: (1, 2)}
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
             actual = sorted(graph_rep.Neighbors(i))
             msg = 'Node {} Connectivity:\n\texpected: {}\n\tactual: {} '.format(i, expected, actual)
+            self.assertEqual(expected, actual, msg)
+
+        self.assertEqual(graph_rep.Neighbors(), expected_graph)
+
+    def test_RelaxedNeighborhood(self):
+        """
+        Tests the Neighbors function in both settings, that is where an index
+        is supplied and when it is not. This does not use an input neighborhood
+        graph, thus NGL must prune the complete graph in this case.
+        """
+        self.setup()
+        self.graph = 'relaxed beta skeleton'
+        graph_rep = pyerg.Graph(self.points, self.graph, self.max_neighbors, self.beta)
+        expected_graph = {0: (1, 3), 1: (0, 2, 4), 2: (1, 3), 3: (0, 2), 4: (1,)}
+
+        for i in range(len(self.points)):
+            expected = list(expected_graph[i])
+            actual = sorted(graph_rep.Neighbors(i))
+            msg = '\nNode {} Connectivity:\n\texpected: {}\n\tactual: {} '.format(i, expected, actual)
             self.assertEqual(expected, actual, msg)
 
         self.assertEqual(graph_rep.Neighbors(), expected_graph)

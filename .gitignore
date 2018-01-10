@@ -3,6 +3,7 @@ ngl.py
 build/*
 __pycache__/*
 .vscode/*
+.vs/*
 dist/*
 MANIFEST
 *.egg-info/*
