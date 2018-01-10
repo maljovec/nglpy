@@ -234,7 +234,7 @@ namespace ngl
 			T num2 = -Geometry<T>::dot(rq,qp)*fabs(Geometry<T>::dot(rq,qp));
 			T den2 = Geometry<T>::dot(qp,qp)*Geometry<T>::dot(rq,rq);
 
-			return ratio*ratio - min(num1/den1, num2/den2);
+			return ratio*ratio - std::min(num1/den1, num2/den2);
 		}
 	};
 	
