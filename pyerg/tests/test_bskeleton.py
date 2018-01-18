@@ -147,5 +147,10 @@ expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2), 4: (1, 2)}
 
         self.assertEqual(graph_rep.Neighbors(), expected_graph)
 
+## TODO: Test if the kmax parameter ever gets used in this version of NGL, since
+## it does not require ANN, I am assuming it does a brute force search of the
+## edges if we don't provide them. We should remove that parameter from NGL if
+## that is the case
+
 if __name__ == '__main__':
     unittest.main()
