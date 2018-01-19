@@ -84,7 +84,7 @@ setup(name='pyerg',
             'Programming Language :: Python :: 3',
             'Topic :: Scientific/Engineering :: Mathematics'
       ],
-      install_requires=[],
+      install_requires=['scikit-learn'],
       python_requires='>=2.7, <4',
       ext_modules=[Extension('_ngl',
                              FILES,

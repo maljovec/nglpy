@@ -38,6 +38,7 @@
     Library (NGL) originally developed by Carlos Correa.
 """
 from .ngl import nglGraph, vectorInt, vectorDouble
+import sklearn.neighbors
 
 class Graph(nglGraph):
     """ A neighborhood graph that represents the connectivity of a given data
@@ -68,10 +69,6 @@ class Graph(nglGraph):
             beta (float): Only relevant when the graph type is a "beta skeleton"
             edges (list): A list of pre-defined edges to prune
         """
-        if edges is None:
-            edges = vectorInt()
-        else:
-            edges = vectorInt(edges)
 
         cols = 0
         rows = len(X)
@@ -79,6 +76,41 @@ class Graph(nglGraph):
             cols = len(X[0])
 
         flattened_X = [xij for Xi in X for xij in Xi]
+
+        if maxN <= 0:
+            maxN = rows-1
+        
+        if maxN >= rows:
+            ## Let the C++ side worry about this, do not build the knn in python
+            ## for a fully connected graph
+            edges = vectorInt()
+        else:
+            if edges is None:
+                knnAlgorithm = sklearn.neighbors.NearestNeighbors(n_neighbors=maxN)
+                knnAlgorithm.fit(X)
+                edges = knnAlgorithm.kneighbors(X, return_distance=False)
+
+                ## use pairs to prevent duplicates
+                pairs = []
+                for e1 in range(0,edges.shape[0]):
+                        for col in range(0,edges.shape[1]):
+                            e2 = edges.item(e1,col)
+                            if e1 != e2:
+                                pairs.append((e1,e2))
+            else:
+                pairs = edges
+
+            # As seen here:
+            #  http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order
+            seen = set()
+            pairs = [ x for x in pairs if not (x in seen or x[::-1] in seen
+                                            or seen.add(x))]
+            edgeList = []
+            for edge in pairs:
+                edgeList.append(edge[0])
+                edgeList.append(edge[1])
+            edges = vectorInt(edgeList)
+
         super(Graph, self).__init__(vectorDouble(flattened_X), rows, cols, graph, maxN, beta, edges)
 
     def Neighbors(self, idx=None):
