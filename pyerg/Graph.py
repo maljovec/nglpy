@@ -98,7 +98,9 @@ class Graph(nglGraph):
                             if e1 != e2:
                                 pairs.append((e1,e2))
             else:
-                pairs = edges
+                pairs = []
+                for i in range(0,len(edges),2):
+                    pairs.append((edges[i],edges[i+1]))
 
             # As seen here:
             #  http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order

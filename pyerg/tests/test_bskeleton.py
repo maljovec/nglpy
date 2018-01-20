@@ -59,7 +59,7 @@ class TestBSkeleton(TestCase):
         0       4
 
         However, the pruned edges should result in this graph:
-expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2), 4: (1, 2)}
+        expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2), 4: (1, 2)}
 
          3----2
           \ /  |
@@ -82,7 +82,7 @@ expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2), 4: (1, 2)}
                        [0.503125, 0.601218],
                        [0.462382, 0.666667],
                        [0.504702, 0.5]]
-        self.max_neighbors = 3
+        self.max_neighbors = 4
         self.beta = 1
         self.graph = 'beta skeleton'
         self.edges = [0, 1, 0, 2, 0, 3, 0, 4,

@@ -40,7 +40,7 @@
 from setuptools import setup, Extension
 
 FILES = ['ngl_wrap.cpp', 'GraphStructure.cpp', 'UnionFind.cpp']
-VERSION = '0.2.5'
+VERSION = '0.2.6'
 
 def long_description():
     """ Reads the README.md file and extracts the portion tagged between
