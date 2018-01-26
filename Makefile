@@ -2,7 +2,7 @@
 ## successfully before each commit
 all:
 	swig -v -python -c++ -o ngl_wrap.cpp ngl.i
-	mv ngl.py pyerg/ngl.py
+	mv ngl.py nglpy/ngl.py
 
 clean:
-	rm ngl_wrap.cpp pyerg/ngl.py
+	rm ngl_wrap.cpp nglpy/ngl.py

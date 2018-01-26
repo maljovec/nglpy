@@ -1,2 +1,2 @@
 python setup.py sdist
-twine upload --repository https://test.pypi.org/legacy/ dist/*
+twine upload --repository pypitest dist/*

@@ -1,1 +1,1 @@
-pip install --index-url https://test.pypi.org/simple/ pyerg
+pip install --index-url https://test.pypi.org/simple/ nglpy

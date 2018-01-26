@@ -33,7 +33,7 @@
  # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.          #
  ##############################################################################
 """
-      Setup script for pyerg, a wrapper library for the C++ implementataion of
+      Setup script for nglpy, a wrapper library for the C++ implementataion of
       the neighborhood graph library (NGL).
 """
 
@@ -61,8 +61,8 @@ def long_description():
             
 
 ## Consult here: https://packaging.python.org/tutorials/distributing-packages/
-setup(name='pyerg',
-      packages=['pyerg'],
+setup(name='nglpy',
+      packages=['nglpy'],
       version=VERSION,
       description='A wrapper library for exposing the C++ neighborhood graph '
                   + 'library (NGL) for computing empty region graphs to python',
@@ -70,10 +70,10 @@ setup(name='pyerg',
       author = 'Dan Maljovec',
       author_email = 'maljovec002@gmail.com',
       license = 'BSD',
-      test_suite='pyerg.tests',
-      url = 'https://github.com/maljovec/pyerg',
-      download_url = 'https://github.com/maljovec/pyerg/archive/'+VERSION+'.tar.gz',
-      keywords = ['geometry', 'neighborhood', 'empty region graph'],
+      test_suite='nglpy.tests',
+      url = 'https://github.com/maljovec/nglpy',
+      download_url = 'https://github.com/maljovec/nglpy/archive/'+VERSION+'.tar.gz',
+      keywords = ['geometry', 'neighborhood', 'empty region graph', 'neighborhood graph library'],
       ## Consult here: https://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
             'Development Status :: 3 - Alpha',

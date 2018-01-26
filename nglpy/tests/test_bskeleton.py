@@ -33,12 +33,12 @@
  # THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.          #
  ##############################################################################
 """
-    This module will test the functionality of pyerg.Graph when using the
+    This module will test the functionality of nglpy.Graph when using the
     beta skeleton graph type
 """
 from unittest import TestCase
 
-import pyerg
+import nglpy
 
 class TestBSkeleton(TestCase):
     """
@@ -97,7 +97,7 @@ class TestBSkeleton(TestCase):
         graph, thus NGL must prune the complete graph in this case.
         """
         self.setup()
-        graph_rep = pyerg.Graph(self.points, self.graph, self.max_neighbors, self.beta)
+        graph_rep = nglpy.Graph(self.points, self.graph, self.max_neighbors, self.beta)
         expected_graph = {0: (1, ), 1: (0, 2, 4), 2: (1, 3), 3: (2, ), 4: (1, )}
 
         for i in range(len(self.points)):
@@ -116,7 +116,7 @@ class TestBSkeleton(TestCase):
         those edges removed from the actual graph.
         """
         self.setup()
-        graph_rep = pyerg.Graph(self.points, self.graph, self.max_neighbors, self.beta, self.edges)
+        graph_rep = nglpy.Graph(self.points, self.graph, self.max_neighbors, self.beta, self.edges)
 
         expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2), 4: (1, 2)}
 
@@ -136,7 +136,7 @@ class TestBSkeleton(TestCase):
         """
         self.setup()
         self.graph = 'relaxed beta skeleton'
-        graph_rep = pyerg.Graph(self.points, self.graph, self.max_neighbors, self.beta)
+        graph_rep = nglpy.Graph(self.points, self.graph, self.max_neighbors, self.beta)
         expected_graph = {0: (1, 3), 1: (0, 2, 4), 2: (1, 3), 3: (0, 2), 4: (1,)}
 
         for i in range(len(self.points)):
