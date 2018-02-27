@@ -55,7 +55,7 @@ class Graph(nglGraph):
     Attributes:
         None
     """
-    def __init__(self, X, graph, maxN, beta, edges=None):
+    def __init__(self, X, graph, maxN, beta, edges=None, connect=False):
         """Initialization of the graph object. This will convert all of the
         passed in parameters into parameters the C++ implementation of NGL
         can understand and then issue an external call to that library.
@@ -68,6 +68,8 @@ class Graph(nglGraph):
                 single point in the dataset.
             beta (float): Only relevant when the graph type is a "beta skeleton"
             edges (list): A list of pre-defined edges to prune
+            connect (boolean): A flag specifying whether the data should
+                be a single connected component.
         """
 
         cols = 0
@@ -113,7 +115,7 @@ class Graph(nglGraph):
                 edgeList.append(edge[1])
             edges = vectorInt(edgeList)
 
-        super(Graph, self).__init__(vectorDouble(flattened_X), rows, cols, graph, maxN, beta, edges)
+        super(Graph, self).__init__(vectorDouble(flattened_X), rows, cols, graph, maxN, beta, edges, connect)
 
     def Neighbors(self, idx=None):
         """Returns the list of neighbors associated to a particular index in the

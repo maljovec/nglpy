@@ -76,7 +76,8 @@ class GraphStructure
    *        pruned by ngl)
    */
   GraphStructure(std::vector<T> &Xin, int rows, int cols, std::string graph,
-                 int maxN, T beta, std::vector<int> &edgeIndices);
+                 int maxN, T beta, std::vector<int> &edgeIndices,
+                 bool connect = false);
 
   /**
    * Returns the number of input dimensions in the associated dataset

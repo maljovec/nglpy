@@ -223,12 +223,8 @@ void GraphStructure<T>::ComputeNeighborhood(std::vector<int> &edgeIndices,
 template<typename T>
 GraphStructure<T>::GraphStructure(std::vector<T> &Xin, int rows, int cols,
                                   std::string graph, int maxN, T beta,
-                                  std::vector<int> &edgeIndices)
+                                  std::vector<int> &edgeIndices, bool connect)
 {
-  // This boolean flag dictates whether the dataset should be forced to be a
-  // single connected component. This feature might get deprecated or promoted
-  // to be exposed to the user, for now I will enforce that it does not happen
-  bool connect = false;
 
   int M = cols;
   int N = rows;
@@ -247,7 +243,7 @@ GraphStructure<T>::GraphStructure(std::vector<T> &Xin, int rows, int cols,
   std::vector< std::vector<T> > distances;
   int kmax = maxN;
 
-  ComputeNeighborhood(edgeIndices, edges, distances, graph, beta, kmax,connect);
+  ComputeNeighborhood(edgeIndices, edges, distances, graph, beta, kmax, connect);
 }
 
 template<typename T>
