@@ -90,8 +90,8 @@ class TestBSkeleton(unittest.TestCase):
                       2, 3, 2, 4,
                       3, 4]
 
-    def test_Neighbors(self):
-        """ Tests the Neighbors function in both settings, that is where
+    def test_neighbors(self):
+        """ Tests the neighbors function in both settings, that is where
             an index is supplied and when it is not. This does not use
             an input neighborhood graph, thus NGL must prune the
             complete graph in this case.
@@ -104,15 +104,15 @@ class TestBSkeleton(unittest.TestCase):
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
-            actual = sorted(graph_rep.Neighbors(i))
+            actual = sorted(graph_rep.neighbors(i))
             msg = '\nNode {} Connectivity:'.format(i)
             msg += '\n\texpected: {}\n\tactual: {} '.format(expected, actual)
             self.assertEqual(expected, actual, msg)
 
-        self.assertEqual(graph_rep.Neighbors(), expected_graph)
+        self.assertEqual(graph_rep.neighbors(), expected_graph)
 
-    def test_Neighbors_with_edges(self):
-        """ Tests the Neighbors function in both settings, that is where
+    def test_neighbors_with_edges(self):
+        """ Tests the neighbors function in both settings, that is where
             an index is supplied and when it is not. A user supplied
             sub-graph is used in this case. Since, this sub-graph prunes
             valid edges, then we should see those edges removed from the
@@ -127,15 +127,15 @@ class TestBSkeleton(unittest.TestCase):
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
-            actual = sorted(graph_rep.Neighbors(i))
+            actual = sorted(graph_rep.neighbors(i))
             msg = '\nNode {} Connectivity:'.format(i)
             msg += '\n\texpected: {}\n\tactual: {} '.format(expected, actual)
             self.assertEqual(expected, actual, msg)
 
-        self.assertEqual(graph_rep.Neighbors(), expected_graph)
+        self.assertEqual(graph_rep.neighbors(), expected_graph)
 
     def test_RelaxedNeighborhood(self):
-        """ Tests the Neighbors function in both settings, that is where
+        """ Tests the neighbors function in both settings, that is where
             an index is supplied and when it is not. This does not use
             an input neighborhood graph, thus NGL must prune the
             complete graph in this case.
@@ -149,12 +149,12 @@ class TestBSkeleton(unittest.TestCase):
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
-            actual = sorted(graph_rep.Neighbors(i))
+            actual = sorted(graph_rep.neighbors(i))
             msg = '\nNode {} Connectivity:'.format(i)
             msg += '\n\texpected: {}\n\tactual: {} '.format(expected, actual)
             self.assertEqual(expected, actual, msg)
 
-        self.assertEqual(graph_rep.Neighbors(), expected_graph)
+        self.assertEqual(graph_rep.neighbors(), expected_graph)
 
 # TODO: Test if the kmax parameter ever gets used in this version of
 # NGL, since it does not require ANN, I am assuming it does a brute

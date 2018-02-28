@@ -144,4 +144,4 @@ class Graph(nglGraph):
         if idx is None:
             return dict(self.FullGraph())
         else:
-            return list(super(Graph, self).Neighbors(int(idx)))
+            return list(super(Graph, self).GetNeighbors(int(idx)))

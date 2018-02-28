@@ -136,13 +136,13 @@ class GraphStructure
    * of indices that are connected to that index
    */
   std::map< int, std::set<int> > FullGraph();
-  
+
   /**
    * Returns a list of indices marked as neighbors to the specified sample given
    * given by "index"
    * @param index integer specifying the unique sample queried
    */
-  std::set<int> Neighbors(int index);
+  std::set<int> GetNeighbors(int index);
 
  private:
   std::vector< std::vector<T> > X;                  /** Input data matrix */

@@ -126,7 +126,7 @@ void GraphStructure<T>::ComputeNeighborhood(std::vector<int> &edgeIndices,
     }
 
     ConnectComponents(ngraph, kmax);
-    
+
     edges = std::vector< std::vector<int> >(kmax, std::vector<int>(numPts, -1));
     dists = std::vector< std::vector<T> >(kmax, std::vector<T>(numPts, -1));
 
@@ -415,7 +415,7 @@ T GraphStructure<T>::RangeX(int dim)
 }
 
 template<typename T>
-std::set<int> GraphStructure<T>::Neighbors(int index)
+std::set<int> GraphStructure<T>::GetNeighbors(int index)
 {
   return neighbors[index];
 }
