@@ -38,9 +38,24 @@
 """
 
 from setuptools import setup, Extension
+import re
+
+
+def get_property(prop, project):
+    """
+        Helper function for retrieving properties from a project's
+        __init__.py file
+        @In, prop, string representing the property to be retrieved
+        @In, project, string representing the project from which we will
+        retrieve the property
+        @Out, string, the value of the found property
+    """
+    result = re.search(r'{}\s*=\s*[\'"]([^\'"]*)[\'"]'.format(prop),
+                       open(project + '/__init__.py').read())
+    return result.group(1)
 
 FILES = ['ngl_wrap.cpp', 'GraphStructure.cpp', 'UnionFind.cpp']
-VERSION = '0.2.6'
+VERSION = get_property('__version__', 'nglpy')
 
 def long_description():
     """ Reads the README.md file and extracts the portion tagged between
@@ -73,7 +88,9 @@ setup(name='nglpy',
       test_suite='nglpy.tests',
       url = 'https://github.com/maljovec/nglpy',
       download_url = 'https://github.com/maljovec/nglpy/archive/'+VERSION+'.tar.gz',
-      keywords = ['geometry', 'neighborhood', 'empty region graph', 'neighborhood graph library'],
+      keywords = ['geometry', 'neighborhood', 'empty region graph',
+                  'neighborhood graph library', 'beta skeleton',
+                  'relative neighbor', 'Gabriel graph'],
       ## Consult here: https://pypi.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
             'Development Status :: 3 - Alpha',
