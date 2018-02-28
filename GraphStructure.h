@@ -82,12 +82,12 @@ class GraphStructure
   /**
    * Returns the number of input dimensions in the associated dataset
    */
-  int Dimension();
+  int dimension();
 
   /**
    * Returns the number of sample points in the associated dataset
    */
-  int Size();
+  int size();
 
   /**
    * Returns the maximum value attained by a specified dimension of the input
@@ -95,7 +95,7 @@ class GraphStructure
    * @param dim integer specifying the column of data where the specified input
    *        dimension is stored
    */
-  T MaxX(int dim);
+  T max(int dim);
 
   /**
    * Returns the minimum value attained by a specified dimension of the input
@@ -103,14 +103,14 @@ class GraphStructure
    * @param dim integer specifying the column of data where the specified input
    *        dimension is stored
    */
-  T MinX(int dim);
+  T min(int dim);
 
   /**
    * Returns MaxX(dim)-MinX(dim)
    * @param dim integer specifying the column of data where the specified input
    *        dimension is stored
    */
-  T RangeX(int dim);
+  T range(int dim);
 
   /**
    * Extracts the input values for a specified sample of the associated data
@@ -119,7 +119,7 @@ class GraphStructure
    * @param xi a pointer that will be updated to point at the specified data
    *        sample
    */
-  void GetX(int i, T *xi);
+  void get_x(int i, T *xi);
 
   /**
    * Extracts the input value for a specified sample and dimension of the
@@ -129,20 +129,20 @@ class GraphStructure
    * @param j integer specifying the column of data where the specified input
    *        dimension is stored
    */
-  T GetX(int i, int j);
+  T get_x(int i, int j);
 
   /**
    * Returns a map where the key is the index of a point and the value is a set
    * of indices that are connected to that index
    */
-  std::map< int, std::set<int> > FullGraph();
+  std::map< int, std::set<int> > full_graph();
 
   /**
    * Returns a list of indices marked as neighbors to the specified sample given
    * given by "index"
    * @param index integer specifying the unique sample queried
    */
-  std::set<int> GetNeighbors(int index);
+  std::set<int> get_neighbors(int index);
 
  private:
   std::vector< std::vector<T> > X;                  /** Input data matrix */
@@ -173,11 +173,11 @@ class GraphStructure
    *        the point samples and connect the closest points between separate
    *        components until everything is one single component)
    */
-  void ComputeNeighborhood(std::vector<int> &edgeIndices,
-                           std::vector< std::vector<int> > &nn,
-                           std::vector< std::vector<T> > &dists,
-                           std::string type, T beta, int &kmax,
-                           bool connect=false);
+  void compute_neighborhood(std::vector<int> &edgeIndices,
+                            std::vector< std::vector<int> > &nn,
+                            std::vector< std::vector<T> > &dists,
+                            std::string type, T beta, int &kmax,
+                            bool connect=false);
 
   /**
    * Helper function to be called after a neighborhood has been constructed in
@@ -185,7 +185,7 @@ class GraphStructure
    * This was only necessary in Sam's visualization, in theory it is fine if the
    * data is disconnected.
    */
-  void ConnectComponents(std::set<int_pair> &ngraph, int &maxCount);
+  void connect_components(std::set<int_pair> &ngraph, int &maxCount);
 };
 
 #endif //GRAPHSTRUCTURE_H

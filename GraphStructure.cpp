@@ -43,14 +43,16 @@
 #include <sstream>
 
 template<typename T>
-void GraphStructure<T>::ComputeNeighborhood(std::vector<int> &edgeIndices,
-                                            std::vector< std::vector<int> > &edges,
-                                            std::vector< std::vector<T> > &dists,
-                                            std::string type, T beta, int &kmax,
-                                            bool connect)
+void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
+                                             std::vector< std::vector<int> > &edges,
+                                             std::vector< std::vector<T> > &dists,
+                                             std::string type,
+                                             T beta,
+                                             int &kmax,
+                                             bool connect)
 {
-  int numPts = Size();
-  int dims = Dimension();
+  int numPts = size();
+  int dims = dimension();
 
   T *pts = new T[numPts*dims];
   for(int i=0; i < numPts; i++)
@@ -125,7 +127,7 @@ void GraphStructure<T>::ComputeNeighborhood(std::vector<int> &edgeIndices,
       ngraph.insert(edge);
     }
 
-    ConnectComponents(ngraph, kmax);
+    connect_components(ngraph, kmax);
 
     edges = std::vector< std::vector<int> >(kmax, std::vector<int>(numPts, -1));
     dists = std::vector< std::vector<T> >(kmax, std::vector<T>(numPts, -1));
@@ -243,15 +245,15 @@ GraphStructure<T>::GraphStructure(std::vector<T> &Xin, int rows, int cols,
   std::vector< std::vector<T> > distances;
   int kmax = maxN;
 
-  ComputeNeighborhood(edgeIndices, edges, distances, graph, beta, kmax, connect);
+  compute_neighborhood(edgeIndices, edges, distances, graph, beta, kmax, connect);
 }
 
 template<typename T>
-void GraphStructure<T>::ConnectComponents(std::set<int_pair> &ngraph,
+void GraphStructure<T>::connect_components(std::set<int_pair> &ngraph,
                                           int &maxCount)
 {
   UnionFind connectedComponents;
-  for(int i = 0; i < Size(); i++)
+  for(int i = 0; i < size(); i++)
     connectedComponents.MakeSet(i);
 
   for(std::set<int_pair>::iterator iter= ngraph.begin();
@@ -296,17 +298,17 @@ void GraphStructure<T>::ConnectComponents(std::set<int_pair> &ngraph,
         {
           int AvIdx = components[a][i];
           std::vector<T> ai;
-          for(int d = 0; d < Dimension(); d++)
+          for(int d = 0; d < dimension(); d++)
               ai.push_back(X[d][AvIdx]);
           for(unsigned int j = 0; j < components[b].size(); j++)
           {
             int BvIdx = components[b][j];
             std::vector<T> bj;
-            for(int d = 0; d < Dimension(); d++)
+            for(int d = 0; d < dimension(); d++)
               bj.push_back(X[d][BvIdx]);
 
             T distance = 0;
-            for(int d = 0; d < Dimension(); d++)
+            for(int d = 0; d < dimension(); d++)
               distance += (ai[d]-bj[d])*(ai[d]-bj[d]);
             if(minDistance == -1 || distance < minDistance)
             {
@@ -343,8 +345,8 @@ void GraphStructure<T>::ConnectComponents(std::set<int_pair> &ngraph,
 
     delete [] components;
   }
-  int *counts = new int[Size()];
-  for(int i = 0; i < Size(); i++)
+  int *counts = new int[size()];
+  for(int i = 0; i < size(); i++)
     counts[i] = 0;
 
   for(std::set<int_pair>::iterator it = ngraph.begin();
@@ -354,7 +356,7 @@ void GraphStructure<T>::ConnectComponents(std::set<int_pair> &ngraph,
     counts[it->first]+=1;
     counts[it->second]+=1;
   }
-  for(int i = 0; i < Size(); i++)
+  for(int i = 0; i < size(); i++)
     maxCount = maxCount < counts[i] ? counts[i] : maxCount;
 
   delete [] counts;
@@ -363,13 +365,13 @@ void GraphStructure<T>::ConnectComponents(std::set<int_pair> &ngraph,
 //Look-up Operations
 
 template<typename T>
-int GraphStructure<T>::Dimension()
+int GraphStructure<T>::dimension()
 {
   return (int) X.size();
 }
 
 template<typename T>
-int GraphStructure<T>::Size()
+int GraphStructure<T>::size()
 {
   if ( X.size() > 0) {
     return (int) X[0].size();
@@ -378,50 +380,50 @@ int GraphStructure<T>::Size()
 }
 
 template<typename T>
-void GraphStructure<T>::GetX(int i, T *xi)
+void GraphStructure<T>::get_x(int i, T *xi)
 {
-  for(int d = 0; d < Dimension(); d++)
+  for(int d = 0; d < dimension(); d++)
     xi[d] = X[d][i];
 }
 
 template<typename T>
-T GraphStructure<T>::GetX(int i, int j)
+T GraphStructure<T>::get_x(int i, int j)
 {
   return X[i][j];
 }
 
 template<typename T>
-T GraphStructure<T>::MinX(int dim)
+T GraphStructure<T>::min(int dim)
 {
   T minX = X[dim][0];
-  for(int i = 1; i < Size(); i++)
+  for(int i = 1; i < size(); i++)
     minX = minX > X[dim][i] ? X[dim][i] : minX;
   return minX;
 }
 
 template<typename T>
-T GraphStructure<T>::MaxX(int dim)
+T GraphStructure<T>::max(int dim)
 {
   T maxX = X[dim][0];
-  for(int i = 1; i < Size(); i++)
+  for(int i = 1; i < size(); i++)
     maxX = maxX < X[dim][i] ? X[dim][i] : maxX;
   return maxX;
 }
 
 template<typename T>
-T GraphStructure<T>::RangeX(int dim)
+T GraphStructure<T>::range(int dim)
 {
-  return MaxX(dim)-MinX(dim);
+  return max(dim)-min(dim);
 }
 
 template<typename T>
-std::set<int> GraphStructure<T>::GetNeighbors(int index)
+std::set<int> GraphStructure<T>::get_neighbors(int index)
 {
   return neighbors[index];
 }
 
 template<typename T>
-std::map< int, std::set<int> > GraphStructure<T>::FullGraph()
+std::map< int, std::set<int> > GraphStructure<T>::full_graph()
 {
   return neighbors;
 }

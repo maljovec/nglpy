@@ -142,6 +142,6 @@ class Graph(nglGraph):
             to the key index.
         """
         if idx is None:
-            return dict(self.FullGraph())
+            return dict(self.full_graph())
         else:
-            return list(super(Graph, self).GetNeighbors(int(idx)))
+            return list(super(Graph, self).get_neighbors(int(idx)))
