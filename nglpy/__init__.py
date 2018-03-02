@@ -37,4 +37,4 @@
 from .Graph import Graph
 
 __all__ = ['Graph']
-__version__ = '1.0.2'
+__version__ = '0.0.2'
