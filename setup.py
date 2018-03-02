@@ -107,7 +107,7 @@ setup(name='nglpy',
             'Programming Language :: Python :: 3',
             'Topic :: Scientific/Engineering :: Mathematics'
       ],
-      install_requires=['scikit-learn'],
+      install_requires=['scipy','numpy','scikit-learn'],
       python_requires='>=2.7, <4',
       ext_modules=[Extension('_ngl',
                              FILES,
