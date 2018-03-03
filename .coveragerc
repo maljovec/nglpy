@@ -1,0 +1,5 @@
+[run]
+branch = True
+omit =
+    nglpy/tests/*
+    nglpy/ngl.py
