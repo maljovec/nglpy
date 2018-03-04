@@ -13,9 +13,9 @@ python:
   - "3.5"
   - "3.6"
   - "nightly"
-  # PyPy versions
-  - "pypy2.7"
-  - "pypy3.5"
+  # PyPy versions commented out since scipy does not play well with pypy
+  # - "pypy2.7"
+  # - "pypy3.5"
 # command to install dependencies
 script: coverage run --source nglpy setup.py test
 after_success:
