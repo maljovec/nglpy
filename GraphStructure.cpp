@@ -273,6 +273,7 @@ void GraphStructure<T>::connect_components(std::set<int_pair> &ngraph,
        << ngraph.size() << ")" << std::endl;
     for(unsigned int i = 0; i < reps.size(); i++)
       ss << reps[i] << " ";
+    std::cerr << ss.str() << std::endl;
   }
 
   while(numComponents > 1)
@@ -341,6 +342,7 @@ void GraphStructure<T>::connect_components(std::set<int_pair> &ngraph,
       std::stringstream ss;
       ss << "Connected Components: " << numComponents << "(Graph size: "
          << ngraph.size() << ")" << std::endl;
+      std::cerr << ss.str() << std::endl;
     }
 
     delete [] components;

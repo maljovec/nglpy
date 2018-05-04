@@ -90,6 +90,9 @@ class TestBSkeleton(unittest.TestCase):
                       2, 3, 2, 4,
                       3, 4]
 
+    def test_empty(self):
+        graph_rep = nglpy.Graph([], 'approximate knn', 1, 1)
+
     def test_neighbors(self):
         """ Tests the neighbors function in both settings, that is where
             an index is supplied and when it is not. This does not use
