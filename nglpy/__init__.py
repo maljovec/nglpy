@@ -35,6 +35,8 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        #
 ########################################################################
 from .Graph import Graph
+from .Graph2 import Graph2
+from .UnionFind import UnionFind
 
-__all__ = ['Graph']
+__all__ = ['Graph', 'Graph2']
 __version__ = '0.0.3'
