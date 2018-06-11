@@ -63,12 +63,12 @@ class Graph2(object):
 
         if beta <= 1:
             r = 1 / beta
-            yC = (r**p - 1)**(1/p)
+            yC = (r**p - 1)**(1. / p)
         else:
             r = beta
             xC = 1 - beta
         
-        y = (r**p - (t-xC)**p)**1/p - yC
+        y = (r**p - (t-xC)**p)**(1. / p) - yC
 
         return 0.5*y
 
@@ -125,15 +125,14 @@ class Graph2(object):
 
         if p == float("inf"):
             if beta >= 1:
-                template[1:steps-1] = beta/2
+                template[:-1] = beta/2
 
             return template
 
-        for i in range(1, steps):
+        for i in range(steps):
             template[i] = Graph2.max_distance(i/steps, beta, p)
 
         return template
-
 
     @staticmethod
     def prune_edges(X, edges, beta, p, relaxed=False):
@@ -155,7 +154,7 @@ class Graph2(object):
                 be a single connected component.
         """
         steps = 49
-        template = Graph2.create_template(beta, p, steps)[::-1]
+        template = Graph2.create_template(beta, p, steps)
         
         pruned_edges = []
 
@@ -165,8 +164,11 @@ class Graph2(object):
             pq = q - p
             Xp = X - p
 
-            projections = np.dot(Xp, pq)
-            distances_to_edge = paired_euclidean_distances(Xp, projections*pq)
+            edge_length = np.linalg.norm(pq)
+            scaled_template = template*edge_length
+
+            projections = np.dot(Xp, pq)/(edge_length**2)
+            distances_to_edge = paired_euclidean_distances(Xp, np.atleast_2d(projections).T*pq)
 
             # First note that our template will be reversed from what the
             # create_template returns, that is 0 index is the edge midpoint and
@@ -179,8 +181,9 @@ class Graph2(object):
             # the endpoints since we will always force the template to be zero
             # at these locations meaning nothing can fail the empty region
             # criteria at either endpoint.
-            lookup_indices = np.clip(np.abs((projections * 2*steps - steps).astype(int)), 0, steps)
-            if not len(np.where(distances_to_edge < template[lookup_indices])[0]):
+            lookup_indices = np.clip(np.abs(np.round(projections * 2*steps - steps).astype(int)), 0, steps)
+
+            if not len(np.where(distances_to_edge < scaled_template[lookup_indices])[0]):
                 pruned_edges.append(edge)
 
         return pruned_edges
@@ -207,11 +210,11 @@ class Graph2(object):
         """
 
         rows = len(X)
-        if maxN <= 0 or maxN >= rows:
-            maxN = rows-1
+        if max_neighbors <= 0 or max_neighbors >= rows:
+            max_neighbors = rows-1
 
         if edges is None:
-            knnAlgorithm = sklearn.neighbors.NearestNeighbors(maxN)
+            knnAlgorithm = sklearn.neighbors.NearestNeighbors(max_neighbors)
             knnAlgorithm.fit(X)
             edges = knnAlgorithm.kneighbors(X, return_distance=False)
 
