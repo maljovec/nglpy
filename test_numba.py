@@ -6,7 +6,7 @@ import argparse
 import sys
 
 parser = argparse.ArgumentParser(description='Build an lp-beta skeleton using numba.')
-parser.add_argument('-i', dest='filename', type=int,
+parser.add_argument('-i', dest='filename', type=str,
                     help='The input data file as a csv.')
 
 args = parser.parse_args()
