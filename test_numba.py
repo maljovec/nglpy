@@ -3,6 +3,7 @@ import sklearn.neighbors
 import time
 import numba
 import argparse
+import sys
 
 parser = argparse.ArgumentParser(description='Build an lp-beta skeleton using numba.')
 parser.add_argument('-d', dest='dimensionality', type=int,
@@ -24,7 +25,7 @@ max_neighbors = min(problem_size-1, kmax)
 start = time.time()
 X = np.loadtxt('../data_{}_{}_0.csv'.format(dimensionality, problem_size))
 end = time.time()
-print('Load data ({} s) shape={}'.format(end-start, X.shape))
+print('Load data ({} s) shape={}'.format(end-start, X.shape), file=sys.stderr)
 
 start = time.time()
 @numba.jit(nopython=True)
@@ -101,17 +102,16 @@ def create_template(beta, p=2, steps=100):
 paired_lpnorms(X[:10], X[:10], 2)
 min_distance_from_edge(0, 1, 2)
 template = create_template(1, 2, 49)
-print(template)
 end = time.time()
-print('Precompile local functions ({} s)'.format(end-start))
-print('Compute preliminary neighborhood graph:')
+print('Precompile local functions ({} s)'.format(end-start), file=sys.stderr)
+print('Compute preliminary neighborhood graph:', file=sys.stderr)
 
 start = time.time()
 knnAlgorithm = sklearn.neighbors.NearestNeighbors(max_neighbors)
 knnAlgorithm.fit(X)
 edges = knnAlgorithm.kneighbors(X, return_distance=False)
 end = time.time()
-print('\t SKL Default ({} s)'.format(end-start))
+print('\t SKL Default ({} s)'.format(end-start), file=sys.stderr)
 
 # @numba.njit(numba.float64[:, ::1](numba.float64[:, ::1], numba.int64[:, ::1], numba.float64, numba.float64, numba.int64), parallel=True, fastmath=True, nogil=True)
 @numba.njit()
@@ -235,18 +235,18 @@ knnAlgorithm.fit(X[:100])
 small_edge_list = knnAlgorithm.kneighbors(X, return_distance=False)
 prune(X[:100], small_edge_list, beta = 1., lp = 2., steps = 49)
 end = time.time()
-print('Precompile prune function ({} s)'.format(end-start))
+print('Precompile prune function ({} s)'.format(end-start), file=sys.stderr)
 
 start = time.time()
 timings = None
 # pruned_edges, timings = prune(X, edges, beta = 1, lp = 2, steps = 49)
 pruned_edges = prune(X, edges, beta = 1, lp = 2, steps = 999)
 end = time.time()
-print('Actual prune function ({} s)'.format(end-start))
+print('Actual prune function ({} s)'.format(end-start), file=sys.stderr)
 
-if timings is not None:
-    for i,t in enumerate(timings):
-        print(i, t)
+# if timings is not None:
+#     for i,t in enumerate(timings):
+#         print(i, t)
 
 # outfile = open('../edges_{}D_numba.txt'.format(dimensionality), 'w')
 for i,p in enumerate(pruned_edges):
