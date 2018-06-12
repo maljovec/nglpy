@@ -6,26 +6,24 @@ import argparse
 import sys
 
 parser = argparse.ArgumentParser(description='Build an lp-beta skeleton using numba.')
-parser.add_argument('-d', dest='dimensionality', type=int,
-                    help='The dimensionality of the problem to handle.')
-parser.add_argument('-n', dest='problem_size', type=int,
-                    help='The number of points to handle.')
+parser.add_argument('-i', dest='filename', type=int,
+                    help='The input data file as a csv.')
 
 args = parser.parse_args()
 
-problem_size = args.problem_size
-dimensionality = args.dimensionality
+start = time.time()
+X = np.loadtxt(args.filename)
+problem_size = X.shape[0]
+dimensionality = X.shape[1]
+end = time.time()
+print('Load data ({} s) shape={}'.format(end-start, X.shape), file=sys.stderr)
+
 if dimensionality < 5:
     kmax = 100
 else:
     kmax = 200
 
 max_neighbors = min(problem_size-1, kmax)
-
-start = time.time()
-X = np.loadtxt('../data_{}_{}_0.csv'.format(dimensionality, problem_size))
-end = time.time()
-print('Load data ({} s) shape={}'.format(end-start, X.shape), file=sys.stderr)
 
 start = time.time()
 @numba.jit(nopython=True)
