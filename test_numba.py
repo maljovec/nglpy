@@ -8,6 +8,8 @@ import sys
 parser = argparse.ArgumentParser(description='Build an lp-beta skeleton using numba.')
 parser.add_argument('-i', dest='filename', type=str,
                     help='The input data file as a csv.')
+parser.add_argument('-s', dest='steps', type=int,
+                    help='The number of steps to perform for discretization.')
 
 args = parser.parse_args()
 
@@ -156,7 +158,7 @@ def prune(X, edges, beta = 1, lp = 2, steps = 99):
             ###################################################################
             #  4	21%
             # start = time.time()
-            # subset = np.unique(subset)
+            subset = np.unique(subset)
             # timings[4] += time.time() - start
             ###################################################################
             #  5	11%
@@ -238,7 +240,7 @@ print('Precompile prune function ({} s)'.format(end-start), file=sys.stderr)
 start = time.time()
 timings = None
 # pruned_edges, timings = prune(X, edges, beta = 1, lp = 2, steps = 49)
-pruned_edges = prune(X, edges, beta = 1, lp = 2, steps = 999)
+pruned_edges = prune(X, edges, beta = 1, lp = 2, steps = args.steps)
 end = time.time()
 print('Actual prune function ({} s)'.format(end-start), file=sys.stderr)
 
