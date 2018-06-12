@@ -1,5 +1,5 @@
 import numpy as np
-import sklearn
+import sklearn.neighbors
 import time
 import numba
 import argparse
