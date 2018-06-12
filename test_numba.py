@@ -1,11 +1,7 @@
 import numpy as np
-import nglpy
 import sklearn
-# import cupy as cp
 import time
 import numba
-from ball_tree_numba_parallel import BallTree
-from sklearn.neighbors import BallTree as skBallTree
 import argparse
 
 parser = argparse.ArgumentParser(description='Build an lp-beta skeleton using numba.')
@@ -31,9 +27,6 @@ end = time.time()
 print('Load data ({} s) shape={}'.format(end-start, X.shape))
 
 start = time.time()
-# pre-run to jit compile the code
-small_edge_list = BallTree(X[:10], leaf_size=40).query(X[:10], 10)
-
 @numba.jit(nopython=True)
 def paired_lpnorms(A, B, p=2):
     """ Method to compute the paired Lp-norms between two sets of points. Note,
@@ -114,40 +107,11 @@ print('Precompile local functions ({} s)'.format(end-start))
 print('Compute preliminary neighborhood graph:')
 
 start = time.time()
-leaf_size = 40
-bt = BallTree(X, leaf_size=leaf_size)
-edges2 = bt.query(X, max_neighbors, sort_results=True)
-end = time.time()
-print('\t Numba BallTree ({} s)'.format(end-start))
-
-start = time.time()
-bt1 = skBallTree(X, leaf_size=leaf_size)
-edges3 = bt1.query(X, max_neighbors, return_distance=False, sort_results=True)
-end = time.time()
-print('\t SKL BallTree ({} s)'.format(end-start))
-
-start = time.time()
 knnAlgorithm = sklearn.neighbors.NearestNeighbors(max_neighbors)
 knnAlgorithm.fit(X)
-edges4 = knnAlgorithm.kneighbors(X, return_distance=False)
+edges = knnAlgorithm.kneighbors(X, return_distance=False)
 end = time.time()
 print('\t SKL Default ({} s)'.format(end-start))
-
-start = time.time()
-edges = np.loadtxt('../knn_{}D_{}.txt'.format(dimensionality, problem_size), delimiter=' ', dtype=int)
-end = time.time()
-print('\t Load ANN File ({} s) shape={}'.format(end-start, edges.shape))
-
-# same_count = 0
-# diff_count = 0
-# for i in range(len(edges)):
-#     for j in range(max_neighbors):
-#         if edges[i, j] != edges2[i, j]:
-#             diff_count += 1
-#         else:
-#             same_count += 1
-
-# print('Same: {} vs. Diff: {}'.format(same_count, diff_count))
 
 # @numba.njit(numba.float64[:, ::1](numba.float64[:, ::1], numba.int64[:, ::1], numba.float64, numba.float64, numba.int64), parallel=True, fastmath=True, nogil=True)
 @numba.njit()
@@ -266,6 +230,9 @@ def prune(X, edges, beta = 1, lp = 2, steps = 99):
     return pruned_edges
 
 start = time.time()
+knnAlgorithm = sklearn.neighbors.NearestNeighbors(100)
+knnAlgorithm.fit(X[:100])
+small_edge_list = knnAlgorithm.kneighbors(X, return_distance=False)
 prune(X[:100], small_edge_list, beta = 1., lp = 2., steps = 49)
 end = time.time()
 print('Precompile prune function ({} s)'.format(end-start))
@@ -273,7 +240,7 @@ print('Precompile prune function ({} s)'.format(end-start))
 start = time.time()
 timings = None
 # pruned_edges, timings = prune(X, edges, beta = 1, lp = 2, steps = 49)
-pruned_edges = prune(X, edges, beta = 1, lp = 2, steps = 99)
+pruned_edges = prune(X, edges, beta = 1, lp = 2, steps = 999)
 end = time.time()
 print('Actual prune function ({} s)'.format(end-start))
 
@@ -281,13 +248,13 @@ if timings is not None:
     for i,t in enumerate(timings):
         print(i, t)
 
-outfile = open('../edges_{}D_numba.txt'.format(dimensionality), 'w')
+# outfile = open('../edges_{}D_numba.txt'.format(dimensionality), 'w')
 for i,p in enumerate(pruned_edges):
     for q in p:
         lo, hi = (int(i), int(q)) if i < q else (int(q), int(i))
         if q != -1 and q != i:
-            outfile.write('{} {}\n'.format(lo,hi))
-outfile.close()
+            print('{} {}\n'.format(lo,hi))
+# outfile.close()
 
 # edge_list = set()
 # for i,p in enumerate(edges):
