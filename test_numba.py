@@ -251,7 +251,7 @@ for i,p in enumerate(pruned_edges):
     for q in p:
         lo, hi = (int(i), int(q)) if i < q else (int(q), int(i))
         if q != -1 and q != i:
-            print('{} {}\n'.format(lo,hi))
+            print('{} {}'.format(lo,hi))
 # outfile.close()
 
 # edge_list = set()
