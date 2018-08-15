@@ -16,8 +16,6 @@ on empty region graph algorithms such as the beta skeleton family of graphs.
 
 # Installation
 
-(Currently under test in test.pypi.org)
-
 ```
 pip install nglpy
 ```
