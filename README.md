@@ -1,8 +1,7 @@
 # nglpy
+[![PyPI](https://img.shields.io/pypi/v/nglpy.svg)](https://pypi.python.org/pypi/nglpy)
 [![Build Status](https://travis-ci.org/maljovec/nglpy.svg?branch=master)](https://travis-ci.org/maljovec/nglpy)
-
 [![Coverage Status](https://coveralls.io/repos/github/maljovec/nglpy/badge.svg?branch=master)](https://coveralls.io/github/maljovec/nglpy?branch=master)
-
 [![Documentation Status](https://readthedocs.org/projects/nglpy/badge/?version=latest)](https://nglpy.readthedocs.io/en/latest/?badge=latest)
 
 A Python wrapped version of the [Neighborhood Graph Library
