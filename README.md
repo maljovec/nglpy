@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/maljovec/nglpy.svg?branch=master)](https://travis-ci.org/maljovec/nglpy)
 [![Coverage Status](https://coveralls.io/repos/github/maljovec/nglpy/badge.svg?branch=master)](https://coveralls.io/github/maljovec/nglpy?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/nglpy/badge/?version=latest)](https://nglpy.readthedocs.io/en/latest/?badge=latest)
+[![Pyup](https://pyup.io/repos/github/maljovec/nglpy/shield.svg)](https://pyup.io/repos/github/maljovec/nglpy/)
 
 A Python wrapped version of the [Neighborhood Graph Library
 (NGL)](http://www.ngraph.org/) developed by Carlos Correa and Peter Lindstrom.
