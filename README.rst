@@ -2,6 +2,8 @@
 nglpy
 =====
 
+.. badges
+
 .. image:: https://img.shields.io/pypi/v/nglpy.svg
         :target: https://pypi.python.org/pypi/nglpy
 .. image:: https://travis-ci.org/maljovec/nglpy.svg?branch=master
@@ -12,6 +14,16 @@ nglpy
         :target: https://nglpy.readthedocs.io/en/latest/?badge=latest
 .. image:: https://pyup.io/repos/github/maljovec/nglpy/shield.svg
         :target: https://pyup.io/repos/github/maljovec/nglpy/
+
+.. end_badges
+
+.. logo
+
+.. image:: ngply.svg
+
+.. end_logo
+
+.. introduction
 
 A Python wrapped version of the [Neighborhood Graph Library
 (NGL_) developed by Carlos Correa and Peter Lindstrom.
@@ -26,6 +38,8 @@ on empty region graph algorithms such as the beta skeleton family of graphs.
 
 .. END_LONG_DESCRIPTION
 
+.. end_introduction
+
 .. install
 
 Installation
@@ -36,6 +50,7 @@ Installation
     pip install nglpy
 
 .. end-install
+
 .. usage
 
 Usage
