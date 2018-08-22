@@ -14,7 +14,7 @@ nglpy
         :target: https://pyup.io/repos/github/maljovec/nglpy/
 
 A Python wrapped version of the [Neighborhood Graph Library
-(NGL_.) developed by Carlos Correa and Peter Lindstrom.
+(NGL_) developed by Carlos Correa and Peter Lindstrom.
 
 .. _NGL: http://www.ngraph.org/
 
