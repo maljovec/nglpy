@@ -19,7 +19,7 @@ nglpy
 
 .. logo
 
-.. image:: docs/_static/ngply.svg
+.. image:: docs/_static/nglpy.svg
 
 .. end_logo
 
