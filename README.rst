@@ -18,9 +18,13 @@ A Python wrapped version of the [Neighborhood Graph Library
 
 .. _NGL: http://www.ngraph.org/
 
+.. LONG_DESCRIPTION
+
 Given a set of arbitrarily arranged points in any dimension, this library is
 able to construct several different types of neighborhood graphs mainly focusing
 on empty region graph algorithms such as the beta skeleton family of graphs.
+
+.. END_LONG_DESCRIPTION
 
 .. install
 
