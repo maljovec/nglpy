@@ -2,4 +2,4 @@ include *.h *.hpp *.cpp
 include *.md
 include *.py
 include LICENSE
-include README.md
+include README.rst

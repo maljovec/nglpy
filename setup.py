@@ -26,12 +26,12 @@ VERSION = get_property('__version__', 'nglpy')
 
 
 def long_description():
-    """ Reads the README.md file and extracts the portion tagged between
+    """ Reads the README.rst file and extracts the portion tagged between
         specific LONG_DESCRIPTION comment lines.
     """
     description = ''
     recording = False
-    with open('README.md') as f:
+    with open('README.rst') as f:
         for line in f:
             if 'END_LONG_DESCRIPTION' in line:
                 return description
