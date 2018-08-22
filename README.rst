@@ -6,20 +6,27 @@ nglpy
 
 .. image:: https://img.shields.io/pypi/v/nglpy.svg
         :target: https://pypi.python.org/pypi/nglpy
+        :alt: PyPi
 .. image:: https://travis-ci.org/maljovec/nglpy.svg?branch=master
         :target: https://travis-ci.org/maljovec/nglpy
+        :alt: Travis-CI
 .. image:: https://coveralls.io/repos/github/maljovec/nglpy/badge.svg?branch=master
         :target: https://coveralls.io/github/maljovec/nglpy?branch=master
+        :alt: Coveralls
 .. image:: https://readthedocs.org/projects/nglpy/badge/?version=latest
         :target: https://nglpy.readthedocs.io/en/latest/?badge=latest
+        :alt: ReadTheDocs
 .. image:: https://pyup.io/repos/github/maljovec/nglpy/shield.svg
         :target: https://pyup.io/repos/github/maljovec/nglpy/
+        :alt: Pyup
 
 .. end_badges
 
 .. logo
 
 .. image:: docs/_static/nglpy.svg
+    :align: center
+    :alt: nglpy
 
 .. end_logo
 
