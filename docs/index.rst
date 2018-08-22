@@ -1,15 +1,14 @@
-.. nglpy documentation master file, created by
-   sphinx-quickstart on Fri Aug 17 13:15:45 2018.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to nglpy's documentation!
 =================================
 
+Neighborhood Graph Library
+
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
 
+   install.rst
+   usage.rst
+   license.rst
 
 
 Indices and tables
