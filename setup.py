@@ -20,8 +20,6 @@ def get_property(prop, project):
                        open(project + '/__init__.py').read())
     return result.group(1)
 
-
-FILES = ['ngl_wrap.cpp', 'GraphStructure.cpp', 'UnionFind.cpp']
 VERSION = get_property('__version__', 'nglpy')
 
 
@@ -71,8 +69,5 @@ setup(name='nglpy',
             'Programming Language :: Python :: 3',
             'Topic :: Scientific/Engineering :: Mathematics'
       ],
-      install_requires=['numpy', 'scipy', 'scikit-learn'],
-      python_requires='>=2.7, <4',
-      ext_modules=[Extension('_ngl',
-                             FILES,
-                             extra_compile_args=['-std=c++11'])])
+      install_requires=['numpy', 'scipy', 'scikit-learn', 'faiss'],
+      python_requires='>=2.7, <4')
