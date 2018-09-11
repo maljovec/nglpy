@@ -75,4 +75,4 @@ setup(name='nglpy',
       python_requires='>=2.7, <4',
       ext_modules=[Extension('_ngl',
                              FILES,
-                             extra_compile_args=['-std=c++11'])])
+                             extra_compile_args=['-std=c++11', '-O3', '-march=native'])])
