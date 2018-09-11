@@ -60,6 +60,7 @@ class Graph(nglGraph):
     Attributes:
         None
     """
+
     def __init__(self, X, graph, maxN, beta, edges=None, connect=False):
         """Initialization of the graph object. This will convert all of
         the passed in parameters into parameters the C++ implementation
@@ -87,7 +88,7 @@ class Graph(nglGraph):
         flattened_X = [xij for Xi in X for xij in Xi]
 
         if maxN <= 0:
-            maxN = rows-1
+            maxN = rows - 1
 
         if maxN >= rows:
             # Let the C++ side worry about this, do not build the knn in
@@ -102,28 +103,30 @@ class Graph(nglGraph):
                 # use pairs to prevent duplicates
                 pairs = []
                 for e1 in range(0, edges.shape[0]):
-                        for col in range(0, edges.shape[1]):
-                            e2 = edges.item(e1, col)
-                            if e1 != e2:
-                                pairs.append((e1, e2))
+                    for col in range(0, edges.shape[1]):
+                        e2 = edges.item(e1, col)
+                        if e1 != e2:
+                            pairs.append((e1, e2))
             else:
                 pairs = []
                 for i in range(0, len(edges), 2):
-                    pairs.append((edges[i], edges[i+1]))
+                    pairs.append((edges[i], edges[i + 1]))
 
             # As seen here:
             #  http://stackoverflow.com/questions/480214/how-do-you-remove-duplicates-from-a-list-in-python-whilst-preserving-order
             seen = set()
-            pairs = [x for x in pairs if not (x in seen or x[::-1] in seen or
-                                              seen.add(x))]
+            pairs = [
+                x for x in pairs if not (x in seen or x[::-1] in seen or seen.add(x))
+            ]
             edgeList = []
             for edge in pairs:
                 edgeList.append(edge[0])
                 edgeList.append(edge[1])
             edges = vectorInt(edgeList)
 
-        super(Graph, self).__init__(vectorDouble(flattened_X), rows, cols,
-                                    graph, maxN, beta, edges, connect)
+        super(Graph, self).__init__(
+            vectorDouble(flattened_X), rows, cols, graph, maxN, beta, edges, connect
+        )
 
     def neighbors(self, idx=None):
         """ Returns the list of neighbors associated to a particular
