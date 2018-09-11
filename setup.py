@@ -69,5 +69,5 @@ setup(name='nglpy',
             'Programming Language :: Python :: 3',
             'Topic :: Scientific/Engineering :: Mathematics'
       ],
-      install_requires=['numpy', 'scipy', 'scikit-learn', 'faiss'],
+      install_requires=['numpy', 'faiss'],
       python_requires='>=2.7, <4')
