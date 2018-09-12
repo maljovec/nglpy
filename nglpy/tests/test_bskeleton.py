@@ -96,7 +96,9 @@ class TestBSkeleton(unittest.TestCase):
             complete graph in this case.
         """
         self.setup()
-        graph_rep = nglpy.Graph(self.points, self.graph, self.max_neighbors, self.beta)
+        graph_rep = nglpy.Graph(
+            self.points, self.graph, self.max_neighbors, self.beta
+        )
         expected_graph = {0: (1,), 1: (0, 2, 4), 2: (1, 3), 3: (2,), 4: (1,)}
 
         for i in range(len(self.points)):
@@ -120,7 +122,13 @@ class TestBSkeleton(unittest.TestCase):
             self.points, self.graph, self.max_neighbors, self.beta, self.edges
         )
 
-        expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2), 4: (1, 2)}
+        expected_graph = {
+            0: (1, 2),
+            1: (0, 3, 4),
+            2: (0, 3, 4),
+            3: (1, 2),
+            4: (1, 2),
+        }
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
@@ -139,8 +147,16 @@ class TestBSkeleton(unittest.TestCase):
         """
         self.setup()
         self.graph = "relaxed beta skeleton"
-        graph_rep = nglpy.Graph(self.points, self.graph, self.max_neighbors, self.beta)
-        expected_graph = {0: (1, 3), 1: (0, 2, 4), 2: (1, 3), 3: (0, 2), 4: (1,)}
+        graph_rep = nglpy.Graph(
+            self.points, self.graph, self.max_neighbors, self.beta
+        )
+        expected_graph = {
+            0: (1, 3),
+            1: (0, 2, 4),
+            2: (1, 3),
+            3: (0, 2),
+            4: (1,),
+        }
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])

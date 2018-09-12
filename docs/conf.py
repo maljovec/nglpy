@@ -105,7 +105,8 @@ html_static_path = ["_static"]
 #     '**': [
 #         'about.html',
 #         'navigation.html',
-#         'relations.html',  # needs 'show_related': True theme option to display
+# vvvvv needs 'show_related': True theme option to display vvvvv
+#         'relations.html',
 #         'searchbox.html',
 #         'donate.html',
 #     ]
