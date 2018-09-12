@@ -59,7 +59,8 @@ setup(
     license="BSD",
     test_suite="nglpy.tests",
     url="https://github.com/maljovec/nglpy",
-    download_url="https://github.com/maljovec/nglpy/archive/" + VERSION + ".tar.gz",
+    download_url="https://github.com/maljovec/nglpy/archive/"
+                 + VERSION + ".tar.gz",
     keywords=[
         "geometry",
         "neighborhood",
@@ -83,7 +84,9 @@ setup(
     python_requires=">=2.7, <4",
     ext_modules=[
         Extension(
-            "_ngl", FILES, extra_compile_args=["-std=c++11", "-O3", "-march=native"]
+            "_ngl",
+            FILES,
+            extra_compile_args=["-std=c++11", "-O3", "-march=native"],
         )
     ],
 )
