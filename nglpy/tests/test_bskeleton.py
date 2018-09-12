@@ -77,18 +77,17 @@ class TestBSkeleton(unittest.TestCase):
 
         """
 
-        self.points = [[0.360502, 0.535494],
-                       [0.476489, 0.560185],
-                       [0.503125, 0.601218],
-                       [0.462382, 0.666667],
-                       [0.504702, 0.5]]
+        self.points = [
+            [0.360502, 0.535494],
+            [0.476489, 0.560185],
+            [0.503125, 0.601218],
+            [0.462382, 0.666667],
+            [0.504702, 0.5],
+        ]
         self.max_neighbors = 4
         self.beta = 1
-        self.graph = 'beta skeleton'
-        self.edges = [0, 1, 0, 2, 0, 3, 0, 4,
-                      1, 3, 1, 4,
-                      2, 3, 2, 4,
-                      3, 4]
+        self.graph = "beta skeleton"
+        self.edges = [0, 1, 0, 2, 0, 3, 0, 4, 1, 3, 1, 4, 2, 3, 2, 4, 3, 4]
 
     def test_neighbors(self):
         """ Tests the neighbors function in both settings, that is where
@@ -97,16 +96,16 @@ class TestBSkeleton(unittest.TestCase):
             complete graph in this case.
         """
         self.setup()
-        graph_rep = nglpy.Graph(self.points, self.graph, self.max_neighbors,
-                                self.beta)
-        expected_graph = {0: (1, ), 1: (0, 2, 4), 2: (1, 3), 3: (2, ),
-                          4: (1, )}
+        graph_rep = nglpy.Graph(
+            self.points, self.graph, self.max_neighbors, self.beta
+        )
+        expected_graph = {0: (1,), 1: (0, 2, 4), 2: (1, 3), 3: (2,), 4: (1,)}
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
             actual = sorted(graph_rep.neighbors(i))
-            msg = '\nNode {} Connectivity:'.format(i)
-            msg += '\n\texpected: {}\n\tactual: {} '.format(expected, actual)
+            msg = "\nNode {} Connectivity:".format(i)
+            msg += "\n\texpected: {}\n\tactual: {} ".format(expected, actual)
             self.assertEqual(expected, actual, msg)
 
         self.assertEqual(graph_rep.neighbors(), expected_graph)
@@ -119,17 +118,23 @@ class TestBSkeleton(unittest.TestCase):
             actual graph.
         """
         self.setup()
-        graph_rep = nglpy.Graph(self.points, self.graph, self.max_neighbors,
-                                self.beta, self.edges)
+        graph_rep = nglpy.Graph(
+            self.points, self.graph, self.max_neighbors, self.beta, self.edges
+        )
 
-        expected_graph = {0: (1, 2), 1: (0, 3, 4), 2: (0, 3, 4), 3: (1, 2),
-                          4: (1, 2)}
+        expected_graph = {
+            0: (1, 2),
+            1: (0, 3, 4),
+            2: (0, 3, 4),
+            3: (1, 2),
+            4: (1, 2),
+        }
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
             actual = sorted(graph_rep.neighbors(i))
-            msg = '\nNode {} Connectivity:'.format(i)
-            msg += '\n\texpected: {}\n\tactual: {} '.format(expected, actual)
+            msg = "\nNode {} Connectivity:".format(i)
+            msg += "\n\texpected: {}\n\tactual: {} ".format(expected, actual)
             self.assertEqual(expected, actual, msg)
 
         self.assertEqual(graph_rep.neighbors(), expected_graph)
@@ -141,20 +146,27 @@ class TestBSkeleton(unittest.TestCase):
             complete graph in this case.
         """
         self.setup()
-        self.graph = 'relaxed beta skeleton'
-        graph_rep = nglpy.Graph(self.points, self.graph, self.max_neighbors,
-                                self.beta)
-        expected_graph = {0: (1, 3), 1: (0, 2, 4), 2: (1, 3), 3: (0, 2),
-                          4: (1,)}
+        self.graph = "relaxed beta skeleton"
+        graph_rep = nglpy.Graph(
+            self.points, self.graph, self.max_neighbors, self.beta
+        )
+        expected_graph = {
+            0: (1, 3),
+            1: (0, 2, 4),
+            2: (1, 3),
+            3: (0, 2),
+            4: (1,),
+        }
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
             actual = sorted(graph_rep.neighbors(i))
-            msg = '\nNode {} Connectivity:'.format(i)
-            msg += '\n\texpected: {}\n\tactual: {} '.format(expected, actual)
+            msg = "\nNode {} Connectivity:".format(i)
+            msg += "\n\texpected: {}\n\tactual: {} ".format(expected, actual)
             self.assertEqual(expected, actual, msg)
 
         self.assertEqual(graph_rep.neighbors(), expected_graph)
+
 
 # TODO: Test if the kmax parameter ever gets used in this version of
 # NGL, since it does not require ANN, I am assuming it does a brute
@@ -162,5 +174,5 @@ class TestBSkeleton(unittest.TestCase):
 # that parameter from NGL if that is the case
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()
