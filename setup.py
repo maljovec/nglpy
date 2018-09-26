@@ -5,7 +5,7 @@
 
 from setuptools import setup, Extension
 import re
-
+import numpy
 
 def get_property(prop, project):
     """
@@ -23,8 +23,14 @@ def get_property(prop, project):
     return result.group(1)
 
 
-FILES = ["ngl_wrap.cpp", "GraphStructure.cpp", "UnionFind.cpp"]
 VERSION = get_property("__version__", "nglpy")
+
+nglpy_core = Extension(
+    "nglpy.core",
+    sources=["nglpy/core.cpp"],
+    include_dirs=["include", numpy.get_include()],
+    extra_compile_args=["-std=c++11", "-O3", "-march=native"],
+)
 
 
 def long_description():
@@ -60,7 +66,8 @@ setup(
     test_suite="nglpy.tests",
     url="https://github.com/maljovec/nglpy",
     download_url="https://github.com/maljovec/nglpy/archive/"
-                 + VERSION + ".tar.gz",
+    + VERSION
+    + ".tar.gz",
     keywords=[
         "geometry",
         "neighborhood",
@@ -82,11 +89,5 @@ setup(
     ],
     install_requires=["numpy", "scipy", "scikit-learn"],
     python_requires=">=2.7, <4",
-    ext_modules=[
-        Extension(
-            "_ngl",
-            FILES,
-            extra_compile_args=["-std=c++11", "-O3", "-march=native"],
-        )
-    ],
+    ext_modules=[nglpy_core],
 )
