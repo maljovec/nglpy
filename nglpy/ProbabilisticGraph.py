@@ -49,7 +49,8 @@ class ProbabilisticGraph(Graph):
         self.seed = 0
         self.probabilities = None
         super(ProbabilisticGraph, self).__init__(
-            index=index, max_neighbors=max_neighbors, relaxed=relaxed, beta=beta
+            index=index, max_neighbors=max_neighbors, relaxed=relaxed,
+            beta=beta
         )
 
     def reseed(self, seed):
@@ -59,7 +60,9 @@ class ProbabilisticGraph(Graph):
         if self.probabilities is None:
             count = self.X.shape[0]
             working_set = np.array(range(count))
-            distances, edges = self.nn_index.search(working_set, self.max_neighbors)
+            distances, edges = self.nn_index.search(
+                working_set, self.max_neighbors
+            )
 
             probabilities = Graph.probability(
                 self.X,
