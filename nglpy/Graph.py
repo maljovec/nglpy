@@ -4,7 +4,7 @@
     Neighborhood Graph Library (NGL) originally developed by Carlos
     Correa.
 """
-from threading import Thread
+# from threading import Thread
 from queue import Queue, Empty
 
 import numpy as np
@@ -93,7 +93,7 @@ def get_edge_list(edges, distances):
     for i, row in enumerate(edges):
         for j, value in enumerate(row):
             if value != -1:
-                edge_list.append((i, value, distances[i, j]))
+                edge_list.append((int(i), int(value), distances[i, j]))
     return edge_list
 
 class Graph(object):
