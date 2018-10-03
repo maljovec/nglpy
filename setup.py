@@ -23,7 +23,6 @@ def get_property(prop, project):
     return result.group(1)
 
 
-FILES = ["ngl_wrap.cpp", "GraphStructure.cpp", "UnionFind.cpp"]
 VERSION = get_property("__version__", "nglpy")
 
 
@@ -50,9 +49,8 @@ setup(
     name="nglpy",
     packages=["nglpy"],
     version=VERSION,
-    description="A wrapper library for exposing the C++ neighborhood "
-    + "graph library (NGL) for computing empty region graphs to "
-    + "python",
+    description="A pure python library that reimplements the neighborhood "
+    + "graph library (NGL) for computing empty region graphs",
     long_description=long_description(),
     author="Dan Maljovec",
     author_email="maljovec002@gmail.com",
@@ -60,7 +58,8 @@ setup(
     test_suite="nglpy.tests",
     url="https://github.com/maljovec/nglpy",
     download_url="https://github.com/maljovec/nglpy/archive/"
-                 + VERSION + ".tar.gz",
+    + VERSION
+    + ".tar.gz",
     keywords=[
         "geometry",
         "neighborhood",
@@ -82,11 +81,4 @@ setup(
     ],
     install_requires=["numpy", "scipy", "scikit-learn"],
     python_requires=">=2.7, <4",
-    ext_modules=[
-        Extension(
-            "_ngl",
-            FILES,
-            extra_compile_args=["-std=c++11", "-O3", "-march=native"],
-        )
-    ],
 )
