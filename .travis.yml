@@ -4,7 +4,7 @@ addons:
     - swig
 # scipy and numpy should be handled in the setup file, but setup does
 # not seem to respect order on some versions of python
-install: make && pip install coveralls
+install: pip install coveralls
 python:
   - "2.7"
   # - "3.2" # see https://github.com/travis-ci/travis-ci/issues/4866

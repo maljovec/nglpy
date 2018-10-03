@@ -19,14 +19,14 @@ def logistic_function(x, r, steepness=3):
 
 
 def paired_lpnorms(A, B, p=2):
-    """ Method to compute the paired Lp-norms between two sets of points. Note,
-    A and B should be the same shape.
+    """ Method to compute the paired Lp-norms between two sets of
+        points. Note, A and B should be the same shape.
 
     Args:
         A (MxN matrix): A collection of points
         B (MxN matrix): A collection of points
-        p (positive float): The p value specifying what kind of Lp-norm to use
-            to compute the shape of the lunes.
+        p (positive float): The p value specifying what kind of Lp-norm
+            to use to compute the shape of the lunes.
     """
     N = A.shape[0]
     dimensionality = A.shape[1]
@@ -40,18 +40,19 @@ def paired_lpnorms(A, B, p=2):
 
 
 def min_distance_from_edge(t, beta, p):
-    """ Using a parameterized scale from [0,1], this function will determine
-    the minimum valid distance to an edge given a specified lune shape defined
-    by a beta parameter for defining the radius and a p parameter specifying
-    the type of Lp-norm the lune's shape will be defined in.
+    """ Using a parameterized scale from [0,1], this function will
+        determine the minimum valid distance to an edge given a
+        specified lune shape defined by a beta parameter for defining
+        the radius and a p parameter specifying the type of Lp-norm the
+        lune's shape will be defined in.
 
     Args:
-        t (float): the parameter value defining how far into the edge we are.
-        0 means we are at one of the endpoints, 1 means we are at the edge's
-        midpoint.
+        t (float): the parameter value defining how far into the edge we
+            are. 0 means we are at one of the endpoints, 1 means we are
+            at the edge's midpoint.
         beta (float): The beta value for the lune-based beta-skeleton
-        p (float): The p value specifying which Lp-norm to use to compute
-            the shape of the lunes. A negative value will be
+        p (float): The p value specifying which Lp-norm to use to
+            compute the shape of the lunes. A negative value will be
             used to represent the inf norm
 
     """
@@ -70,14 +71,15 @@ def min_distance_from_edge(t, beta, p):
 
 
 def create_template(beta, p=2, steps=100):
-    """ Method for creating a template that can be mapped to each edge in
-    a graph, since the template is symmetric, it will map from one endpoint
-    to the center of the edge.
+    """ Method for creating a template that can be mapped to each edge
+        in a graph, since the template is symmetric, it will map from
+        one endpoint to the center of the edge.
 
     Args:
-        beta (float [0,1]): The beta value for the lune-based beta-skeleton
-        p (positive float): The p value specifying which Lp-norm to use to
-            compute the shape of the lunes.
+        beta (float [0,1]): The beta value for the lune-based beta
+            skeleton
+        p (positive float): The p value specifying which Lp-norm to use
+            to compute the shape of the lunes.
     """
     template = np.zeros(steps + 1)
     if p < 0:
@@ -88,6 +90,7 @@ def create_template(beta, p=2, steps=100):
         template[i] = min_distance_from_edge(i / steps, beta, p)
     return template
 
+
 def get_edge_list(edges, distances):
     edge_list = []
     for i, row in enumerate(edges):
@@ -95,6 +98,7 @@ def get_edge_list(edges, distances):
             if value != -1:
                 edge_list.append((int(i), int(value), distances[i, j]))
     return edge_list
+
 
 class Graph(object):
     """ A neighborhood graph that represents the connectivity of a given
@@ -119,9 +123,13 @@ class Graph(object):
                 pq = q - p
                 edge_length = np.linalg.norm(pq)
                 if relaxed:
-                    subset = np.setdiff1d(pruned_edges[i, :k], [-1]).astype(np.int64)
+                    subset = np.setdiff1d(pruned_edges[i, :k], [-1]).astype(
+                        np.int64
+                    )
                 else:
-                    subset = np.concatenate((edges[i], edges[j])).astype(np.int64)
+                    subset = np.concatenate((edges[i], edges[j])).astype(
+                        np.int64
+                    )
 
                 Xp = X[subset] - p
                 projections = np.dot(Xp, pq) / (edge_length ** 2)
@@ -156,9 +164,13 @@ class Graph(object):
                 pq = q - p
                 edge_length = np.linalg.norm(pq)
                 if relaxed:
-                    subset = np.setdiff1d(pruned_edges[i, :k], [-1]).astype(np.int64)
+                    subset = np.setdiff1d(pruned_edges[i, :k], [-1]).astype(
+                        np.int64
+                    )
                 else:
-                    subset = np.concatenate((edges[i], edges[j])).astype(np.int64)
+                    subset = np.concatenate((edges[i], edges[j])).astype(
+                        np.int64
+                    )
                 Xp = X[subset] - p
                 projections = np.dot(Xp, pq) / (edge_length ** 2)
                 temp_indices = np.logical_and(
@@ -190,7 +202,7 @@ class Graph(object):
     ):
         problem_size = edges.shape[0]
         template = create_template(beta, lp, steps)
-        pruned_edges = np.zeros(shape=edges.shape) - 1
+        probabilities = np.zeros(shape=edges.shape)
         for i in range(problem_size):
             p = X[i]
             for k in range(edges.shape[1]):
@@ -224,7 +236,7 @@ class Graph(object):
                         steepness,
                     )
                 )
-        return pruned_edges
+        return probabilities
 
     @staticmethod
     def probability(X, edges, beta=1, lp=2, relaxed=False, steepness=3):
@@ -328,8 +340,12 @@ class Graph(object):
         if self.edges is None:
             count = self.X.shape[0]
             working_set = np.array(range(count))
-            distances, edges = self.nn_index.search(working_set, self.max_neighbors)
-            edges = Graph.prune(self.X, edges, relaxed=self.relaxed, beta=self.beta)
+            distances, edges = self.nn_index.search(
+                working_set, self.max_neighbors
+            )
+            edges = Graph.prune(
+                self.X, edges, relaxed=self.relaxed, beta=self.beta
+            )
             self.edges = edges
             self.distances = distances
         valid_edges = get_edge_list(self.edges, self.distances)
