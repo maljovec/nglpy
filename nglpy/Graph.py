@@ -282,7 +282,7 @@ class Graph(object):
                 )
         return probabilities
 
-    def __init__(self, index=None, max_neighbors=-1, relaxed=False, beta=1):
+    def __init__(self, index=None, max_neighbors=-1, relaxed=False, beta=1, p=2, discrete_steps=-1):
         """Initialization of the graph object. This will convert all of
         the passed in parameters into parameters the C++ implementation
         of NGL can understand and then issue an external call to that
@@ -308,6 +308,8 @@ class Graph(object):
         else:
             self.nn_index = index
         self.needs_reset = False
+        self.lp = p
+        self.discrete_steps = discrete_steps
 
     def build(self, X):
         """Initialization of the graph object. This will convert all of
@@ -344,7 +346,7 @@ class Graph(object):
                 working_set, self.max_neighbors
             )
             edges = Graph.prune(
-                self.X, edges, relaxed=self.relaxed, beta=self.beta
+                self.X, edges, relaxed=self.relaxed, beta=self.beta, lp=self.lp
             )
             self.edges = edges
             self.distances = distances
