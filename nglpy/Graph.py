@@ -4,8 +4,12 @@
     Neighborhood Graph Library (NGL) originally developed by Carlos
     Correa.
 """
+import sys
 # from threading import Thread
-from queue import Queue, Empty
+if sys.version_info[0] < 3:
+  from Queue import Queue, Empty
+else:
+  from queue import Queue, Empty
 
 import numpy as np
 
@@ -270,7 +274,7 @@ class Graph(object):
                 )
         return probabilities
 
-    def __init__(self, index=None, max_neighbors=-1, relaxed=False, beta=1):
+    def __init__(self, index=None, max_neighbors=-1, relaxed=False, beta=1, p=2.):
         """Initialization of the graph object. This will convert all of
         the passed in parameters into parameters the C++ implementation
         of NGL can understand and then issue an external call to that
@@ -285,11 +289,15 @@ class Graph(object):
                 associate with any single point in the dataset.
             relaxed (bool): Whether the relaxed ERG should be computed
             beta (float): Defines the shape of the beta skeleton
+            p (float): Defines the Lp-norm to use in computing the shape
+                of the empty region.
         """
+        sys.stdout.flush()
         self.X = np.array([[]])
         self.max_neighbors = max_neighbors
         self.relaxed = relaxed
         self.beta = beta
+        self.p = p
         self.edges = None
         if index is None:
             self.nn_index = SKLSearchIndex()
@@ -307,6 +315,7 @@ class Graph(object):
             X (matrix): The data matrix for which we will be determining
                 connectivity.
         """
+        sys.stdout.flush()
         self.X = np.array(X)
         N = len(self.X)
 
@@ -329,7 +338,7 @@ class Graph(object):
             count = self.X.shape[0]
             working_set = np.array(range(count))
             distances, edges = self.nn_index.search(working_set, self.max_neighbors)
-            edges = Graph.prune(self.X, edges, relaxed=self.relaxed, beta=self.beta)
+            edges = Graph.prune(self.X, edges, relaxed=self.relaxed, beta=self.beta, lp=self.p)
             self.edges = edges
             self.distances = distances
         valid_edges = get_edge_list(self.edges, self.distances)

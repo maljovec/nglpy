@@ -3,7 +3,12 @@
     functionality needed by any one implementation of an approximate
     k nearest neighbor structure
 """
-from abc import ABC, abstractmethod
+import abc
+import sys
+if sys.version_info[0] < 3:
+    ABC = abc.ABCMeta('ABC', (object,), {'__slots__': ()})
+else:
+    from abc import ABC
 
 
 class SearchIndex(ABC):
@@ -20,14 +25,14 @@ class SearchIndex(ABC):
         """
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def fit(self, X):
         """ Will build any supporting data structures if necessary given
             the data stored in X
         """
         pass
 
-    @abstractmethod
+    @abc.abstractmethod
     def search(self, idx, k, return_distance=True):
         """ Returns the list of neighbors associated to one or more
             poiints in the dataset.

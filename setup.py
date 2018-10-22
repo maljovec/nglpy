@@ -3,7 +3,7 @@
       implementataion of the neighborhood graph library (NGL).
 """
 
-from setuptools import setup, Extension
+from setuptools import setup
 import re
 
 
