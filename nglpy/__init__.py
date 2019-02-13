@@ -36,7 +36,8 @@
 ########################################################################
 from .Graph import Graph
 from .Graph2 import Graph2
+from .conic_spanners import yao_graph, theta_graph
 from .UnionFind import UnionFind
 
-__all__ = ['Graph', 'Graph2']
+__all__ = ["Graph", "Graph2", "yao_graph", "theta_graph"]
 __version__ = '0.0.3'
