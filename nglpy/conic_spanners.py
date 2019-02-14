@@ -1,12 +1,12 @@
 import numpy as np
 from sklearn import neighbors
-import samplers
+import samply
 
 
 def yao_graph(X, D, k, max_neighbors=None):
     if max_neighbors is None:
         max_neighbors = len(X)
-    vectors = samplers.SCVTSampler.generate_samples(k, D)
+    vectors = samply.SCVTSampler.generate_samples(k, D)
     edges = []
 
     nn = neighbors.NearestNeighbors(n_neighbors=max_neighbors)
@@ -39,7 +39,7 @@ def yao_graph(X, D, k, max_neighbors=None):
 def theta_graph(X, D, k, max_neighbors=None):
     if max_neighbors is None:
         max_neighbors = len(X)
-    vectors = samplers.SCVTSampler.generate_samples(k, D)
+    vectors = samply.SCVTSampler.generate_samples(k, D)
     edges = []
 
     nn = neighbors.NearestNeighbors(n_neighbors=max_neighbors)

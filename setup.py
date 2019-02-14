@@ -80,7 +80,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Topic :: Scientific/Engineering :: Mathematics",
     ],
-    install_requires=["numpy", "scipy", "scikit-learn"],
+    install_requires=["numpy", "scipy", "scikit-learn", "samply"],
     python_requires=">=2.7, <4",
     ext_modules=[
         Extension(
