@@ -49,7 +49,6 @@ namespace ngl
   protected:
     int *neighborIndices;
     int *neighborOffsets;
-    int kmax;
 
   public:
     prebuiltNGLPointSet()

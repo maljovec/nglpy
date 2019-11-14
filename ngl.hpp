@@ -104,6 +104,7 @@ namespace ngl
 		virtual void destroy() { }
 		virtual void createValid(int numPts)
 		{
+			if(valid) delete [] valid;
 			valid = new bool[numPts];
 			for(int k = 0; k< numPts; k++)
 			{
@@ -112,7 +113,7 @@ namespace ngl
 		}
 		virtual void destroyValid()
 		{
-			if(valid) delete valid;
+			if(valid) delete [] valid;
 		}
 		virtual void invalidate(IndexType i)
 		{
