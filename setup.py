@@ -6,6 +6,8 @@
 from setuptools import setup, Extension
 import re
 
+requirements = open('requirements.txt').read().strip().split('\n')
+
 
 def get_property(prop, project):
     """
@@ -80,7 +82,7 @@ setup(
         "Programming Language :: Python :: 3",
         "Topic :: Scientific/Engineering :: Mathematics",
     ],
-    install_requires=["numpy", "scipy", "scikit-learn"],
+    install_requires=requirements,
     python_requires=">=2.7, <4",
     ext_modules=[
         Extension(
