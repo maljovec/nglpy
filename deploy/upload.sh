@@ -1,2 +1,3 @@
 #!/bin/bash
-twine upload dist/* --verbose
+twine upload dist/*
+
