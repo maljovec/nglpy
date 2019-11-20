@@ -6,5 +6,5 @@ Graphs
 ~~~~~~
 
 .. automodule:: nglpy.EmptyRegionGraph
+    :special-members:
     :members:
-
