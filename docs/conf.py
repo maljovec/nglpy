@@ -181,3 +181,6 @@ texinfo_documents = [
         "Miscellaneous",
     )
 ]
+
+os.chdir('..')
+subprocess.call('make')
