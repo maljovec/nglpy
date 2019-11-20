@@ -37,4 +37,4 @@
 from .EmptyRegionGraph import EmptyRegionGraph
 
 __all__ = ["EmptyRegionGraph"]
-__version__ = "1.0.0"
+__version__ = "1.0.2"
