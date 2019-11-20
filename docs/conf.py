@@ -171,4 +171,4 @@ texinfo_documents = [
     )
 ]
 
-subprocess.call(["cd .. && make"])
+subprocess.call(["cd", "..", "&&", "make"])
