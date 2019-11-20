@@ -8,3 +8,10 @@ build:
 
 install:
   - requirements: requirements.txt
+
+python:
+  version: 3.7
+  install:
+    - method: setuptools
+      path: .
+  system_packages: true
