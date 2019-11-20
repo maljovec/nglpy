@@ -17,11 +17,22 @@
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
+from mock import Mock
 import os
 import sys
 import subprocess
 sys.path.insert(0, os.path.abspath('..'))
 
+
+# Mock things for readthedoc build
+class MyMock(Mock):
+    @classmethod
+    def __getattr__(cls, name):
+        return MyMock()
+
+
+MOCK_MODULES = ['_ngl']
+sys.modules.update((mod_name, MyMock()) for mod_name in MOCK_MODULES)
 
 # -- General configuration ------------------------------------------------
 
@@ -170,7 +181,3 @@ texinfo_documents = [
         "Miscellaneous",
     )
 ]
-
-os.chdir("..")
-subprocess.call(["make"])
-subprocess.call(["python", "setup.py", "install"])
