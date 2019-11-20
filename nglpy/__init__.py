@@ -34,7 +34,7 @@
 # OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN  #
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        #
 ########################################################################
-from .Graph import Graph
+from .EmptyRegionGraph import EmptyRegionGraph
 
-__all__ = ["Graph"]
-__version__ = "0.0.2"
+__all__ = ["EmptyRegionGraph"]
+__version__ = "1.0.0"
