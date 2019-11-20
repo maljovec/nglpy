@@ -8,6 +8,7 @@ Neighborhood Graph Library
 
    install.rst
    usage.rst
+   api.rst
    license.rst
 
 

@@ -7,6 +7,8 @@
 from .ngl import nglGraph, vectorInt, vectorDouble
 import sklearn.neighbors
 
+from nglpy import utils
+
 
 class EmptyRegionGraph(nglGraph):
     """ A neighborhood graph that represents the connectivity of a given
@@ -26,15 +28,75 @@ class EmptyRegionGraph(nglGraph):
     """
 
     def __init__(self,
-                 index=None,
+                 *,
                  max_neighbors=-1,
                  relaxed=False,
                  beta=1,
                  p=2.0,
-                 discrete_steps=-1,
-                 template_function=None,
-                 query_size=None,
-                 cached=True):
+                 **kwargs):
+        """
+        Constructor for the Empty Region Graph class that takes several keyword
+        only arguments and configures a Graph object that can be applied to
+        different datasets.
+
+        This helper function will take all of the extra arguments not currently
+        used by a calling function/environment, and print a warning to standard
+        error letting them know they are using an unsupported feature passed into a
+        function.
+
+        Parameters
+        ----------
+        max_neighbors : int
+            The maximum number of neighbors any one point can have. This is an
+            efficiency heuristic that will limit the underlying k-nearest
+            neighbor searching algorithm to only return max_neighbors edges per
+            point which will then be pruned using the empty region criteria.
+            This can cause a large speed-up over a full brute force edge search
+            while having often little effect on the actual graph returned.
+            Oftentimes, limiting the size of the empty region graph in this way
+            is a benefit not a detriment for desired graph qualities.
+        relaxed : bool
+            Determines whether the relaxed graph (as determined by Correa and
+            Lindstrom's algorithm) should be computed. A relaxed edge
+            satisifies the empty region criteria from the perspective of one
+            endpoint, whereas a strict edge satisfies this criteria from the
+            perspective of both endpoints.
+        beta : float
+            A positive value working in conjunction with the p value to specify
+            the size and shape of the empty region required around a valid
+            edge. Roughly, beta is a size parameter and p is a shape parameter.
+            For p values less than one, beta is inversely proportional to
+            the size of the empty region, and for p values greater than one,
+            beta is directly proportional to the size of the empty region.
+            When p is one, the beta parameter is irrelevant.
+
+            For an interactive example of how these values interact, see:
+            http://www.cs.utah.edu/~maljovec/bpSkeleton.html
+        p : float
+            A positive value working in conjunction with the beta value to
+            specify the shape and size of the empty region required around a
+            valid edge. Thsi value specifies the Lp-norm to use for generating
+            the empty regions. Roughly, beta is a size parameter and p is a
+            shape parameter. For p values less than one, beta is inversely
+            proportional to the size of the empty region, and for p values
+            greater than one, beta is directly proportional to the size of the
+            empty region. When p is one, the beta parameter is irrelevant.
+
+            For an interactive example of how these values interact, see:
+            http://www.cs.utah.edu/~maljovec/bpSkeleton.html
+
+        kwargs
+            Forward-compatible catch-all dictionary that will allow us to throw
+            a warning for every named parameter not available in this version.
+
+        Returns
+        -------
+        None
+
+        """
+
+        utils.consume_extra_args(kwargs)
+
         self.max_neighbors = max_neighbors
         self.relaxed = relaxed
         self.beta = beta
