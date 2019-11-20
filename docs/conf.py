@@ -173,4 +173,4 @@ texinfo_documents = [
 
 os.chdir("..")
 subprocess.call(["make"])
-subprocess.call(["python", "setup.py", "build"])
+subprocess.call(["python", "setup.py", "install"])
