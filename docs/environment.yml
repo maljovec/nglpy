@@ -1,7 +1,5 @@
 name: nglpy-docs
 dependencies:
-  - pip:
-    - scipy
-    - numpy
-    - scikit-learn
-
+  - scipy
+  - numpy
+  - scikit-learn
