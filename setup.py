@@ -5,8 +5,12 @@
 
 from setuptools import setup, Extension
 import re
+import sys
 
 requirements = open('requirements.txt').read().strip().split('\n')
+if sys.platform == 'darwin':
+    extra_compile_args = ["-stdlib=libc++"]
+    extra_link_args = ['-stdlib=libc++']
 
 
 def get_property(prop, project):
@@ -88,7 +92,11 @@ setup(
         Extension(
             "_ngl",
             FILES,
-            extra_compile_args=["-std=c++11", "-O3", "-march=native"],
+            extra_compile_args=["-std=c++11",
+                                "-O3",
+                                "-march=native",
+                                *extra_compile_args],
+            extra_link_args=extra_link_args
         )
     ],
 )
