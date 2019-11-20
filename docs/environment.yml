@@ -3,3 +3,4 @@ dependencies:
   - scipy
   - numpy
   - scikit-learn
+  - swig
