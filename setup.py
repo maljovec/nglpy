@@ -8,6 +8,8 @@ import re
 import sys
 
 requirements = open('requirements.txt').read().strip().split('\n')
+extra_compile_args = []
+extra_link_args = []
 if sys.platform == 'darwin':
     extra_compile_args = ["-stdlib=libc++"]
     extra_link_args = ['-stdlib=libc++']
