@@ -9,14 +9,19 @@ set -x
 GIT_HASH=$(git rev-parse --short HEAD | tr 'abcdefghijklmnopqrstuvwxyz' '12345678901234567890123456')
 awk -v hash=$GIT_HASH '/^__version__ = \"/{ sub(/"$/,".dev"hash"&") }1' nglpy/__init__.py > tmp && mv tmp nglpy/__init__.py
 TEMP_VERSION=$(grep  '__version__ = ' nglpy/__init__.py | cut -d = -f 2 | sed "s/\"//g" | sed 's/^[ \t]*//;s/[ \t]*$//')
+TEMP_VERSION=$(expr $TEMP_VERSION)
 echo $TEMP_VERSION
 
 # Build the project
 make
 python setup.py sdist
 
-# Test the upload
+# Test the upload, temporarily disable exit on error, since there is a race
+# condition for which build will get this out first, also, re-triggered builds
+# would never succeed in this step.
+set +e
 twine upload --repository-url https://test.pypi.org/legacy/ -u __token__ -p ${PYPI_TOKEN} --non-interactive dist/nglpy-${TEMP_VERSION}.tar.gz
+set -e
 
 #Give it some time to register internally before trying to install it
 sleep 60

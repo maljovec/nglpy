@@ -111,3 +111,6 @@ venv.bak/
 # Project-specific entries
 ngl_wrap.cpp
 nglpy/ngl.py
+
+# MacOS
+**/.DS_Store
