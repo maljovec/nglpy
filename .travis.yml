@@ -14,7 +14,8 @@ python:
   # - "pypy2.7"
   # - "pypy3.5"
 # command to install dependencies
-script: coverage run --source nglpy setup.py test
+script:
+ - ". travis.sh"
 after_success:
   - coveralls
 branches:
