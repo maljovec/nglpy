@@ -62,7 +62,7 @@ class PrebuiltGraph(nglGraph):
             edgeList.append(edge[1])
         edges = vectorInt(edgeList)
 
-        super(EmptyRegionGraph, self).__init__(
+        super(PrebuiltGraph, self).__init__(
             vectorDouble(flattened_X),
             rows,
             cols,
@@ -92,4 +92,4 @@ class PrebuiltGraph(nglGraph):
         if idx is None:
             return dict(self.full_graph())
         else:
-            return list(super(EmptyRegionGraph, self).get_neighbors(int(idx)))
+            return list(super(PrebuiltGraph, self).get_neighbors(int(idx)))

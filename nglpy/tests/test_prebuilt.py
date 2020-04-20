@@ -5,7 +5,7 @@ import nglpy
 
 
 class TestPrebuiltGraph(unittest.TestCase):
-    """ Class for testing the Gabriel graph
+    """ Class for testing the pre-built graph
     """
 
     def setup(self):
