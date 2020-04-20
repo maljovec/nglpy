@@ -5,7 +5,6 @@
     Correa.
 """
 from .ngl import nglGraph, vectorInt, vectorDouble
-import sklearn.neighbors
 
 from nglpy import utils
 
