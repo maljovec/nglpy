@@ -29,14 +29,9 @@ class TestPrebuiltGraph(unittest.TestCase):
             [0.504702, 0.5],
         ]
         self.edges = [(0, 1),
-                      (0, 2),
-                      (0, 3),
-                      (0, 4),
-                      (1, 3),
+                      (1, 2),
                       (1, 4),
-                      (2, 3),
-                      (2, 4),
-                      (3, 4)]
+                      (2, 3)]
 
     def test_neighbors(self):
         """ Tests the neighbors function in both settings, that is where
@@ -47,11 +42,11 @@ class TestPrebuiltGraph(unittest.TestCase):
         self.setup()
         graph_rep = nglpy.PrebuiltGraph(edges=self.edges)
         graph_rep.build(self.points)
-        expected_graph = {0: (1,2,3,4),
-                          1: (0, 3, 4),
-                          2: (0, 3, 4),
-                          3: (0,1,2,4),
-                          4: (0,1,2,3)}
+        expected_graph = {0: (1, ),
+                          1: (0, 2, 4),
+                          2: (1, 3),
+                          3: (2, ),
+                          4: (1, )}
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])
