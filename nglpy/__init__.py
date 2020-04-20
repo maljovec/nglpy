@@ -35,6 +35,7 @@
 # IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                        #
 ########################################################################
 from .EmptyRegionGraph import EmptyRegionGraph
+from .PrebuiltGraph import PrebuiltGraph
 
-__all__ = ["EmptyRegionGraph"]
-__version__ = "1.0.5"
+__all__ = ["EmptyRegionGraph", "PrebuiltGraph"]
+__version__ = "1.1.0"
