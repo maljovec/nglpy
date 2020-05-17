@@ -58,8 +58,8 @@ class PrebuiltGraph(nglGraph):
         ]
         edgeList = []
         for edge in pairs:
-            edgeList.append(edge[0])
-            edgeList.append(edge[1])
+            edgeList.append(int(edge[0]))
+            edgeList.append(int(edge[1]))
         edges = vectorInt(edgeList)
 
         super(PrebuiltGraph, self).__init__(
