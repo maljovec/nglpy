@@ -119,7 +119,7 @@ class TestBSkeleton(unittest.TestCase):
             complete graph in this case.
         """
         self.setup()
-        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=self.max_neighbors,
+        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=0,
                                            beta=self.beta,
                                            relaxed=True,
                                            p=self.p,
