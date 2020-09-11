@@ -143,6 +143,22 @@ class TestBSkeleton(unittest.TestCase):
         self.assertEqual(graph_rep.neighbors(), expected_graph)
 
 
+    def test_empty(self):
+        """ Tests handling of empty data, we just want to make sure nothing
+            breaks terribly.
+        """
+        self.setup()
+        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=self.max_neighbors,
+                                           beta=self.beta,
+                                           relaxed=True,
+                                           p=self.p,
+                                           discrete_steps=self.discrete_steps)
+        graph_rep.build([])
+        expected_graph = {}
+
+        self.assertEqual(graph_rep.neighbors(), expected_graph)
+
+
 # TODO: Test if the kmax parameter ever gets used in this version of
 # NGL, since it does not require ANN, I am assuming it does a brute
 # force search of the edges if we don't provide them. We should remove
