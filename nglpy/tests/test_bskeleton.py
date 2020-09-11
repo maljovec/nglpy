@@ -142,7 +142,6 @@ class TestBSkeleton(unittest.TestCase):
 
         self.assertEqual(graph_rep.neighbors(), expected_graph)
 
-
     def test_empty(self):
         """ Tests handling of empty data, we just want to make sure nothing
             breaks terribly.
