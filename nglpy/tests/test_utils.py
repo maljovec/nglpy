@@ -27,9 +27,9 @@ class TestUtils(unittest.TestCase):
             warnings.simplefilter("always")
             nglpy.utils.consume_extra_args(fail_on_missing=False, **unused)
 
-            assert len(w) == 1
-            assert issubclass(w[-1].category, UserWarning)
-            assert msg in str(w[-1].message)
+            self.assertEqual(len(w), 1)
+            self.assertTrue(issubclass(w[-1].category, UserWarning))
+            self.assertTrue(msg in str(w[-1].message))
 
 
 if __name__ == "__main__":
