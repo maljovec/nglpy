@@ -111,3 +111,7 @@ venv.bak/
 # Project-specific entries
 ngl_wrap.cpp
 nglpy/ngl.py
+
+
+.DS_Store
+.vscode

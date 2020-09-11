@@ -119,7 +119,7 @@ class TestBSkeleton(unittest.TestCase):
             complete graph in this case.
         """
         self.setup()
-        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=self.max_neighbors,
+        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=0,
                                            beta=self.beta,
                                            relaxed=True,
                                            p=self.p,
@@ -139,6 +139,21 @@ class TestBSkeleton(unittest.TestCase):
             msg = "\nNode {} Connectivity:".format(i)
             msg += "\n\texpected: {}\n\tactual: {} ".format(expected, actual)
             self.assertEqual(expected, actual, msg)
+
+        self.assertEqual(graph_rep.neighbors(), expected_graph)
+
+    def test_empty(self):
+        """ Tests handling of empty data, we just want to make sure nothing
+            breaks terribly.
+        """
+        self.setup()
+        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=self.max_neighbors,
+                                           beta=self.beta,
+                                           relaxed=True,
+                                           p=self.p,
+                                           discrete_steps=self.discrete_steps)
+        graph_rep.build([])
+        expected_graph = {}
 
         self.assertEqual(graph_rep.neighbors(), expected_graph)
 

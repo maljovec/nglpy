@@ -32,5 +32,5 @@ def consume_extra_args(fail_on_missing=False, **kwargs):
         if fail_on_missing:
             raise NotImplementedError(msg)
         else:
-            msg = 'It will be ignored.'
+            msg += 'It will be ignored.'
             warnings.warn(msg, UserWarning, stacklevel=3)
