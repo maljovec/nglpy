@@ -97,8 +97,6 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
     exit(1);
   }
 
-  std::raise(SIGINT);
-
   graphAlgorithms[type](*P, &indices, numEdges, params);
   std::stringstream ss;
   ss << "\t\t(Edges: " << numEdges << ")" << std::endl;
