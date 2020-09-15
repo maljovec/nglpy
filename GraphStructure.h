@@ -47,10 +47,10 @@
  * Induces 1-skeleton on a arbitrary dimensional point cloud using one of the
  * empty region graphs from the ngl library.
  */
-template<typename T>
+template <typename T>
 class GraphStructure
 {
- public:
+public:
   /* Here are a list of typedefs to make things more compact and readable */
   typedef std::pair<int, int> int_pair;
 
@@ -64,13 +64,12 @@ class GraphStructure
    * @param Xin flattened vector of input data in row-major order
    * @param rows int specifying the number of points in this data set
    * @param cols int specifying the number of dimensions in this data set
+   * @param graph a string specifying the type of neighborhood graph to build.
    * @param maxN integer specifying the maximum number of neighbors to use in
    *        computing/pruning a neighborhood graph
    * @param beta floating point value in the range (0,2] determining the beta
    *        value used if the neighborhood type is a beta-skeleton, otherwise
    *        ignored
-   * @param win vector of probability values in a one-to-one correspondence with
-   *        Xin
    * @param edgeIndices an optional list of edges specified as a flattened
    *        n-by-2 array to use as the underlying graph structure (will be
    *        pruned by ngl)
@@ -135,7 +134,7 @@ class GraphStructure
    * Returns a map where the key is the index of a point and the value is a set
    * of indices that are connected to that index
    */
-  std::map< int, std::set<int> > full_graph();
+  std::map<int, std::set<int>> full_graph();
 
   /**
    * Returns a list of indices marked as neighbors to the specified sample given
@@ -144,10 +143,10 @@ class GraphStructure
    */
   std::set<int> get_neighbors(int index);
 
- private:
-  std::vector< std::vector<T> > X;                  /** Input data matrix */
+private:
+  std::vector<std::vector<T>> X; /** Input data matrix */
 
-  std::map< int, std::set<int> > neighbors;         /** Maps a list of points
+  std::map<int, std::set<int>> neighbors; /** Maps a list of points
                                                      *  that are neighbors of
                                                      *  the index             */
   //////////////////////////////////////////////////////////////////////////////
@@ -161,9 +160,6 @@ class GraphStructure
    *        neighborhood graph.
    * @param edgeIndices a vector of nonegative integer indices representing
    *        a flattened array of pre-computed edge indices to use for pruning.
-   * @param nn a matrix of integers storing the edge indices for each sample.
-   * @param dists a matrix of floating point values storing the edge distances
-   *        for each sample.
    * @param type a string specifying the type of neighborhood graph to build.
    * @param beta floating point value used for the beta skeleton computation.
    * @param kmax an integer representing the maximum number of k-nearest
@@ -174,10 +170,8 @@ class GraphStructure
    *        components until everything is one single component)
    */
   void compute_neighborhood(std::vector<int> &edgeIndices,
-                            std::vector< std::vector<int> > &nn,
-                            std::vector< std::vector<T> > &dists,
                             std::string type, T beta, int &kmax,
-                            bool connect=false);
+                            bool connect = false);
 
   /**
    * Helper function to be called after a neighborhood has been constructed in

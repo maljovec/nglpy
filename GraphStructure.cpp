@@ -42,10 +42,8 @@
 #include <cstdlib>
 #include <sstream>
 
-template<typename T>
+template <typename T>
 void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
-                                             std::vector< std::vector<int> > &edges,
-                                             std::vector< std::vector<T> > &dists,
                                              std::string type,
                                              T beta,
                                              int &kmax,
@@ -54,14 +52,14 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
   int numPts = size();
   int dims = dimension();
 
-  T *pts = new T[numPts*dims];
-  for(int i=0; i < numPts; i++)
-    for(int d = 0; d < dims; d++)
-      pts[i*dims+d] = X[d][i];
+  T *pts = new T[numPts * dims];
+  for (int i = 0; i < numPts; i++)
+    for (int d = 0; d < dims; d++)
+      pts[i * dims + d] = X[d][i];
 
   ngl::Geometry<T>::init(dims);
-  if(kmax<0)
-    kmax = numPts-1;
+  if (kmax < 0)
+    kmax = numPts - 1;
 
   ngl::NGLPointSet<T> *P;
   ngl::NGLParams<T> params;
@@ -70,7 +68,7 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
   ngl::IndexType *indices = NULL;
   int numEdges = 0;
 
-  if(edgeIndices.size() > 0)
+  if (edgeIndices.size() > 0)
   {
     P = new ngl::prebuiltNGLPointSet<T>(pts, numPts, edgeIndices);
   }
@@ -78,19 +76,20 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
   {
     P = new ngl::NGLPointSet<T>(pts, numPts);
   }
+  delete[] pts;
 
   std::map<std::string, graphFunction> graphAlgorithms;
-  graphAlgorithms["approximate knn"]       = ngl::getKNNGraph<T>;
-  graphAlgorithms["beta skeleton"]         = ngl::getBSkeleton<T>;
+  graphAlgorithms["approximate knn"] = ngl::getKNNGraph<T>;
+  graphAlgorithms["beta skeleton"] = ngl::getBSkeleton<T>;
   graphAlgorithms["relaxed beta skeleton"] = ngl::getRelaxedBSkeleton<T>;
-  graphAlgorithms["diamond graph"]         = ngl::getDiamondGraph<T>;
+  graphAlgorithms["diamond graph"] = ngl::getDiamondGraph<T>;
   graphAlgorithms["relaxed diamond graph"] = ngl::getRelaxedDiamondGraph<T>;
   //As it turns out, NGL's KNN graph assumes the input data is a KNN and so, is
   // actually just a pass through method that passes every input edge. We can
   // leverage this to accept "none" graphs.
-  graphAlgorithms["none"]                  = ngl::getKNNGraph<T>;
+  graphAlgorithms["none"] = ngl::getKNNGraph<T>;
 
-  if(graphAlgorithms.find(type) == graphAlgorithms.end())
+  if (graphAlgorithms.find(type) == graphAlgorithms.end())
   {
     //TODO
     //These checks can probably be done upfront, so as not to waste computation
@@ -98,131 +97,63 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
     exit(1);
   }
 
-  graphAlgorithms[type](*P,&indices,numEdges,params);
-
+  graphAlgorithms[type](*P, &indices, numEdges, params);
   std::stringstream ss;
   ss << "\t\t(Edges: " << numEdges << ")" << std::endl;
 
-  delete [] pts;
   delete P;
 
   std::vector<int> nextNeighborId(numPts, 0);
 
-  if(connect)
+  neighbors.clear();
+  for (int i = 0; i < numPts; i++)
+    neighbors[i] = std::set<int>();
+
+  if (connect)
   {
-    std::set< std::pair<int,int> > ngraph;
-    for(int i = 0; i < numEdges; i++)
+    std::set<std::pair<int, int>> ngraph;
+    for (int i = 0; i < numEdges; i++)
     {
-      std::pair<int,int> edge;
-      if(indices[2*i+0] > indices[2*i+1])
+      std::pair<int, int> edge;
+      if (indices[2 * i + 0] > indices[2 * i + 1])
       {
-        edge.first = indices[2*i+1];
-        edge.second = indices[2*i+0];
+        edge.first = indices[2 * i + 1];
+        edge.second = indices[2 * i + 0];
       }
       else
       {
-        edge.first = indices[2*i+0];
-        edge.second = indices[2*i+1];
+        edge.first = indices[2 * i + 0];
+        edge.second = indices[2 * i + 1];
       }
       ngraph.insert(edge);
     }
 
     connect_components(ngraph, kmax);
 
-    edges = std::vector< std::vector<int> >(kmax, std::vector<int>(numPts, -1));
-    dists = std::vector< std::vector<T> >(kmax, std::vector<T>(numPts, -1));
-
-    for(std::set< std::pair<int,int> >::iterator it = ngraph.begin();
-        it != ngraph.end(); it++)
+    for (std::set<std::pair<int, int>>::iterator it = ngraph.begin();
+         it != ngraph.end(); it++)
     {
       int i1 = it->first;
       int i2 = it->second;
-      double dist = 0;
-      for(int d = 0; d < dims; d++)
-          dist += ((X[d][i1]-X[d][i2])*(X[d][i1]-X[d][i2]));
 
-      int j = nextNeighborId[i1];
-      nextNeighborId[i1] = nextNeighborId[i1] + 1;
-      edges[j][i1] = i2;
-      dists[j][i1] = dist;
-
-      j = nextNeighborId[i2];
-      nextNeighborId[i2] = nextNeighborId[i2] + 1;
-      edges[j][i2] = i1;
-      dists[j][i2] = dist;
+      neighbors[i1].insert(i2);
+      neighbors[i2].insert(i1);
     }
   }
   else
   {
-    int *neighborCounts = new int[numPts];
-    for(int i =0; i < numPts; i++)
-      neighborCounts[i] = 0;
-
-    for(int i =0; i < numEdges; i++)
+    for (int i = 0; i < numEdges; i++)
     {
-      int i1 = indices[2*i+0];
-      int i2 = indices[2*i+1];
-      neighborCounts[i1]++;
-      neighborCounts[i2]++;
-    }
+      int i1 = indices[2 * i + 0];
+      int i2 = indices[2 * i + 1];
 
-    for(int i =0; i < numPts; i++)
-      kmax = neighborCounts[i] > kmax ? neighborCounts[i] : kmax;
-    delete [] neighborCounts;
-
-    edges = std::vector< std::vector<int> >(kmax, std::vector<int>(numPts, -1));
-    dists = std::vector< std::vector<T> >(kmax, std::vector<T>(numPts, -1));
-
-    for(int i = 0; i < numEdges; i++)
-    {
-      int i1 = indices[2*i+0];
-      int i2 = indices[2*i+1];
-      if(i1 > i2)
-      {
-        int temp = i2;
-        i2 = i1;
-        i1 = temp;
-      }
-
-      double dist = 0;
-      for(int d = 0; d < dims; d++)
-          dist += ((X[d][i1]-X[d][i2])*(X[d][i1]-X[d][i2]));
-
-      int j = nextNeighborId[i1];
-      nextNeighborId[i1] = nextNeighborId[i1] + 1;
-      edges[j][i1] = i2;
-      dists[j][i1] = dist;
-
-      j = nextNeighborId[i2];
-      nextNeighborId[i2] = nextNeighborId[i2] + 1;
-      edges[j][i2] = i1;
-      dists[j][i2] = dist;
-    }
-  }
-
-  for(int i = 0; i < numPts; i++)
-    //TODO: too many neighborhood representations floating around, this one is
-    //      useful for later queries to the data, when the user wants to ask
-    //      who is near point x?
-    neighbors[i] = std::set<int>();
-  for(int i = 0; i < numPts; i++)
-  {
-    for(int k = 0; k < kmax; k++)
-    {
-      //TODO: too many neighborhood representations floating around, this one is
-      //      useful for later queries to the data, when the user wants to ask
-      //      who is near point x?
-      int i2 = edges[k][i];
-      if(i2 != -1 && i != i2)
-      {
-        neighbors[i].insert(i2);
-        neighbors[i2].insert(i);
-      }
+      neighbors[i1].insert(i2);
+      neighbors[i2].insert(i1);
     }
   }
 }
 
-template<typename T>
+template <typename T>
 GraphStructure<T>::GraphStructure(std::vector<T> &Xin, int rows, int cols,
                                   std::string graph, int maxN, T beta,
                                   std::vector<int> &edgeIndices, bool connect)
@@ -231,86 +162,84 @@ GraphStructure<T>::GraphStructure(std::vector<T> &Xin, int rows, int cols,
   int M = cols;
   int N = rows;
 
-  X = std::vector< std::vector<T> >(M,std::vector<T>(N, 0));
+  X = std::vector<std::vector<T>>(M, std::vector<T>(N, 0));
 
-  for(int n = 0; n < N; n++)
+  for (int n = 0; n < N; n++)
   {
-    for(int m = 0; m < M; m++)
+    for (int m = 0; m < M; m++)
     {
-      X[m][n] = Xin[n*M+m];
+      X[m][n] = Xin[n * M + m];
     }
   }
 
-  std::vector< std::vector<int> > edges;
-  std::vector< std::vector<T> > distances;
   int kmax = maxN;
 
-  compute_neighborhood(edgeIndices, edges, distances, graph, beta, kmax, connect);
+  compute_neighborhood(edgeIndices, graph, beta, kmax, connect);
 }
 
-template<typename T>
+template <typename T>
 void GraphStructure<T>::connect_components(std::set<int_pair> &ngraph,
-                                          int &maxCount)
+                                           int &maxCount)
 {
   UnionFind connectedComponents;
-  for(int i = 0; i < size(); i++)
+  for (int i = 0; i < size(); i++)
     connectedComponents.MakeSet(i);
 
-  for(std::set<int_pair>::iterator iter= ngraph.begin();
-      iter != ngraph.end();
-      iter++)
+  for (std::set<int_pair>::iterator iter = ngraph.begin();
+       iter != ngraph.end();
+       iter++)
   {
-    connectedComponents.Union(iter->first,iter->second);
+    connectedComponents.Union(iter->first, iter->second);
   }
 
   int numComponents = connectedComponents.CountComponents();
   std::vector<int> reps;
   connectedComponents.GetComponentRepresentatives(reps);
-  if(numComponents > 1)
+  if (numComponents > 1)
   {
     std::stringstream ss;
     ss << "Connected Components: " << numComponents << "(Graph size: "
        << ngraph.size() << ")" << std::endl;
-    for(unsigned int i = 0; i < reps.size(); i++)
+    for (unsigned int i = 0; i < reps.size(); i++)
       ss << reps[i] << " ";
   }
 
-  while(numComponents > 1)
+  while (numComponents > 1)
   {
     //Get each representative of a component and store each
     // component into its own set
     std::vector<int> reps;
     connectedComponents.GetComponentRepresentatives(reps);
     std::vector<int> *components = new std::vector<int>[reps.size()];
-    for(unsigned int i = 0; i < reps.size(); i++)
-      connectedComponents.GetComponentItems(reps[i],components[i]);
+    for (unsigned int i = 0; i < reps.size(); i++)
+      connectedComponents.GetComponentItems(reps[i], components[i]);
 
     //Determine closest points between all pairs of components
     double minDistance = -1;
     int p1 = -1;
     int p2 = -1;
 
-    for(unsigned int a = 0; a < reps.size(); a++)
+    for (unsigned int a = 0; a < reps.size(); a++)
     {
-      for(unsigned int b = a+1; b < reps.size(); b++)
+      for (unsigned int b = a + 1; b < reps.size(); b++)
       {
-        for(unsigned int i = 0; i < components[a].size(); i++)
+        for (unsigned int i = 0; i < components[a].size(); i++)
         {
           int AvIdx = components[a][i];
           std::vector<T> ai;
-          for(int d = 0; d < dimension(); d++)
-              ai.push_back(X[d][AvIdx]);
-          for(unsigned int j = 0; j < components[b].size(); j++)
+          for (int d = 0; d < dimension(); d++)
+            ai.push_back(X[d][AvIdx]);
+          for (unsigned int j = 0; j < components[b].size(); j++)
           {
             int BvIdx = components[b][j];
             std::vector<T> bj;
-            for(int d = 0; d < dimension(); d++)
+            for (int d = 0; d < dimension(); d++)
               bj.push_back(X[d][BvIdx]);
 
             T distance = 0;
-            for(int d = 0; d < dimension(); d++)
-              distance += (ai[d]-bj[d])*(ai[d]-bj[d]);
-            if(minDistance == -1 || distance < minDistance)
+            for (int d = 0; d < dimension(); d++)
+              distance += (ai[d] - bj[d]) * (ai[d] - bj[d]);
+            if (minDistance == -1 || distance < minDistance)
             {
               minDistance = distance;
               p1 = components[a][i];
@@ -322,108 +251,109 @@ void GraphStructure<T>::connect_components(std::set<int_pair> &ngraph,
     }
 
     //Merge
-    connectedComponents.Union(p1,p2);
-    if(p1 < p2)
+    connectedComponents.Union(p1, p2);
+    if (p1 < p2)
     {
-      int_pair edge = std::make_pair(p1,p2);
+      int_pair edge = std::make_pair(p1, p2);
       ngraph.insert(edge);
     }
     else
     {
-      int_pair edge = std::make_pair(p1,p2);
+      int_pair edge = std::make_pair(p1, p2);
       ngraph.insert(edge);
     }
 
     //Recompute
     numComponents = connectedComponents.CountComponents();
-    if(numComponents > 1)
+    if (numComponents > 1)
     {
       std::stringstream ss;
       ss << "Connected Components: " << numComponents << "(Graph size: "
          << ngraph.size() << ")" << std::endl;
     }
 
-    delete [] components;
+    delete[] components;
   }
   int *counts = new int[size()];
-  for(int i = 0; i < size(); i++)
+  for (int i = 0; i < size(); i++)
     counts[i] = 0;
 
-  for(std::set<int_pair>::iterator it = ngraph.begin();
-      it != ngraph.end();
-      it++)
+  for (std::set<int_pair>::iterator it = ngraph.begin();
+       it != ngraph.end();
+       it++)
   {
-    counts[it->first]+=1;
-    counts[it->second]+=1;
+    counts[it->first] += 1;
+    counts[it->second] += 1;
   }
-  for(int i = 0; i < size(); i++)
+  for (int i = 0; i < size(); i++)
     maxCount = maxCount < counts[i] ? counts[i] : maxCount;
 
-  delete [] counts;
+  delete[] counts;
 }
 
 //Look-up Operations
 
-template<typename T>
+template <typename T>
 int GraphStructure<T>::dimension()
 {
-  return (int) X.size();
+  return (int)X.size();
 }
 
-template<typename T>
+template <typename T>
 int GraphStructure<T>::size()
 {
-  if ( X.size() > 0) {
-    return (int) X[0].size();
+  if (X.size() > 0)
+  {
+    return (int)X[0].size();
   }
   return 0;
 }
 
-template<typename T>
+template <typename T>
 void GraphStructure<T>::get_x(int i, T *xi)
 {
-  for(int d = 0; d < dimension(); d++)
+  for (int d = 0; d < dimension(); d++)
     xi[d] = X[d][i];
 }
 
-template<typename T>
+template <typename T>
 T GraphStructure<T>::get_x(int i, int j)
 {
   return X[i][j];
 }
 
-template<typename T>
+template <typename T>
 T GraphStructure<T>::min(int dim)
 {
   T minX = X[dim][0];
-  for(int i = 1; i < size(); i++)
+  for (int i = 1; i < size(); i++)
     minX = minX > X[dim][i] ? X[dim][i] : minX;
   return minX;
 }
 
-template<typename T>
+template <typename T>
 T GraphStructure<T>::max(int dim)
 {
   T maxX = X[dim][0];
-  for(int i = 1; i < size(); i++)
+  for (int i = 1; i < size(); i++)
     maxX = maxX < X[dim][i] ? X[dim][i] : maxX;
   return maxX;
 }
 
-template<typename T>
+template <typename T>
 T GraphStructure<T>::range(int dim)
 {
-  return max(dim)-min(dim);
+  return max(dim) - min(dim);
 }
 
-template<typename T>
+template <typename T>
 std::set<int> GraphStructure<T>::get_neighbors(int index)
 {
   return neighbors[index];
 }
 
-template<typename T>
-std::map< int, std::set<int> > GraphStructure<T>::full_graph()
+template <typename T>
+std::map<int, std::set<int>> GraphStructure<T>::full_graph()
 {
   return neighbors;
 }
