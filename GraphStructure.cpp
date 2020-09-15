@@ -105,7 +105,9 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
 
   std::vector<int> nextNeighborId(numPts, 0);
 
-  std::vector<std::vector<int>> edges;
+  neighbors.clear();
+  for (int i = 0; i < numPts; i++)
+    neighbors[i] = std::set<int>();
 
   if (connect)
   {
@@ -128,83 +130,25 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
 
     connect_components(ngraph, kmax);
 
-    edges = std::vector<std::vector<int>>(kmax, std::vector<int>(numPts, -1));
-
     for (std::set<std::pair<int, int>>::iterator it = ngraph.begin();
          it != ngraph.end(); it++)
     {
       int i1 = it->first;
       int i2 = it->second;
 
-      int j = nextNeighborId[i1];
-      nextNeighborId[i1] = nextNeighborId[i1] + 1;
-      edges[j][i1] = i2;
-
-      j = nextNeighborId[i2];
-      nextNeighborId[i2] = nextNeighborId[i2] + 1;
-      edges[j][i2] = i1;
+      neighbors[i1].insert(i2);
+      neighbors[i2].insert(i1);
     }
   }
   else
   {
-    int *neighborCounts = new int[numPts];
-    for (int i = 0; i < numPts; i++)
-      neighborCounts[i] = 0;
-
     for (int i = 0; i < numEdges; i++)
     {
       int i1 = indices[2 * i + 0];
       int i2 = indices[2 * i + 1];
-      neighborCounts[i1]++;
-      neighborCounts[i2]++;
-    }
 
-    for (int i = 0; i < numPts; i++)
-      kmax = neighborCounts[i] > kmax ? neighborCounts[i] : kmax;
-    delete[] neighborCounts;
-
-    edges = std::vector<std::vector<int>>(kmax, std::vector<int>(numPts, -1));
-
-    for (int i = 0; i < numEdges; i++)
-    {
-      int i1 = indices[2 * i + 0];
-      int i2 = indices[2 * i + 1];
-      if (i1 > i2)
-      {
-        int temp = i2;
-        i2 = i1;
-        i1 = temp;
-      }
-
-      int j = nextNeighborId[i1];
-      nextNeighborId[i1] = nextNeighborId[i1] + 1;
-      edges[j][i1] = i2;
-
-      j = nextNeighborId[i2];
-      nextNeighborId[i2] = nextNeighborId[i2] + 1;
-      edges[j][i2] = i1;
-    }
-  }
-
-  for (int i = 0; i < numPts; i++)
-    //TODO: too many neighborhood representations floating around, this one is
-    //      useful for later queries to the data, when the user wants to ask
-    //      who is near point x?
-    neighbors[i] = std::set<int>();
-
-  for (int i = 0; i < numPts; i++)
-  {
-    for (int k = 0; k < kmax; k++)
-    {
-      //TODO: too many neighborhood representations floating around, this one is
-      //      useful for later queries to the data, when the user wants to ask
-      //      who is near point x?
-      int i2 = edges[k][i];
-      if (i2 != -1 && i != i2)
-      {
-        neighbors[i].insert(i2);
-        neighbors[i2].insert(i);
-      }
+      neighbors[i1].insert(i2);
+      neighbors[i2].insert(i1);
     }
   }
 }
