@@ -134,7 +134,7 @@ public:
    * Returns a map where the key is the index of a point and the value is a set
    * of indices that are connected to that index
    */
-  std::map<int, std::set<int>> full_graph();
+  std::map<int, std::set<int> > full_graph();
 
   /**
    * Returns a list of indices marked as neighbors to the specified sample given
@@ -144,9 +144,9 @@ public:
   std::set<int> get_neighbors(int index);
 
 private:
-  std::vector<std::vector<T>> X; /** Input data matrix */
+  std::vector<std::vector<T> > X; /** Input data matrix */
 
-  std::map<int, std::set<int>> neighbors; /** Maps a list of points
+  std::map<int, std::set<int> > neighbors; /** Maps a list of points
                                                      *  that are neighbors of
                                                      *  the index             */
   //////////////////////////////////////////////////////////////////////////////
