@@ -40,6 +40,7 @@
 #include <utility>
 #include <limits>
 #include <cstdlib>
+#include <string>
 #include <sstream>
 
 template <typename T>
