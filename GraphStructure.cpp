@@ -112,7 +112,7 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
 
   if (connect)
   {
-    std::set<std::pair<int, int>> ngraph;
+    std::set<std::pair<int, int> > ngraph;
     for (int i = 0; i < numEdges; i++)
     {
       std::pair<int, int> edge;
@@ -131,7 +131,7 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
 
     connect_components(ngraph, kmax);
 
-    for (std::set<std::pair<int, int>>::iterator it = ngraph.begin();
+    for (std::set<std::pair<int, int> >::iterator it = ngraph.begin();
          it != ngraph.end(); it++)
     {
       int i1 = it->first;
@@ -163,7 +163,7 @@ GraphStructure<T>::GraphStructure(std::vector<T> &Xin, int rows, int cols,
   int M = cols;
   int N = rows;
 
-  X = std::vector<std::vector<T>>(M, std::vector<T>(N, 0));
+  X = std::vector<std::vector<T> >(M, std::vector<T>(N, 0));
 
   for (int n = 0; n < N; n++)
   {
@@ -354,7 +354,7 @@ std::set<int> GraphStructure<T>::get_neighbors(int index)
 }
 
 template <typename T>
-std::map<int, std::set<int>> GraphStructure<T>::full_graph()
+std::map<int, std::set<int> > GraphStructure<T>::full_graph()
 {
   return neighbors;
 }
