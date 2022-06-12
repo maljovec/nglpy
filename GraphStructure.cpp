@@ -130,7 +130,7 @@ void GraphStructure<T>::compute_neighborhood(std::vector<int> &edgeIndices,
 
     connect_components(ngraph, kmax);
 
-    for (std::set<std::pair<int, int>   >::iterator it = ngraph.begin();
+    for (std::set<std::pair<int, int> >::iterator it = ngraph.begin();
          it != ngraph.end(); it++)
     {
       int i1 = it->first;
