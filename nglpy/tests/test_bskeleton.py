@@ -2,6 +2,7 @@
     when using the beta skeleton graph type
 """
 import unittest
+
 import nglpy
 
 

@@ -57,12 +57,12 @@ repos:
         language: system
         types: [python]
         require_serial: true
-      - id: bandit
-        name: bandit
-        entry: "bandit -r -c pyproject.toml ."
-        language: system
-        types: [python]
-        require_serial: true
+      # - id: bandit
+      #   name: bandit
+      #   entry: "bandit -r -c pyproject.toml ."
+      #   language: system
+      #   types: [python]
+        # require_serial: true
   - repo: https://github.com/pre-commit/pygrep-hooks
     rev: v1.9.0
     hooks:

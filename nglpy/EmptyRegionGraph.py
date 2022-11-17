@@ -4,10 +4,11 @@
     Neighborhood Graph Library (NGL) originally developed by Carlos
     Correa.
 """
-from .ngl import nglGraph, vectorInt, vectorDouble
 import sklearn.neighbors
 
 from nglpy import utils
+
+from .ngl import nglGraph, vectorDouble, vectorInt
 
 
 class EmptyRegionGraph(nglGraph):

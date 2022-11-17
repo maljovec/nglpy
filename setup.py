@@ -3,9 +3,10 @@
       implementataion of the neighborhood graph library (NGL).
 """
 
-from setuptools import setup, Extension
 import re
 import sys
+
+from setuptools import Extension, setup
 
 requirements = open("requirements.txt").read().strip().split("\n")
 extra_compile_args = []
