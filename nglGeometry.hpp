@@ -31,10 +31,10 @@
 
 #include "math.h"
 
-namespace ngl 
+namespace ngl
 {
 	typedef unsigned int IndexType;
-	
+
 	template<typename T>
 	struct NGLPoint
 	{
@@ -42,129 +42,129 @@ namespace ngl
 		inline T& operator[](int i) { return data[i]; }
 		inline T operator *() { return *data; }
 	};
-	
+
 	template<typename T>
-	class Geometry 
+	class Geometry
   {
 	 public:
 		static unsigned int D;
-		static void init(unsigned int d) 
+		static void init(unsigned int d)
 		{
 			D = d;
 		}
-		static NGLPoint<T>* allocate(int numPts) 
+		static NGLPoint<T>* allocate(int numPts)
 		{
 			NGLPoint<T>* ptr = static_cast<NGLPoint<T>*>( new NGLPoint<T>[numPts] );
-			for(int i = 0; i < numPts ; i++) 
+			for(int i = 0; i < numPts ; i++)
 			{
 				allocate(ptr[i]);
 			}
 			return ptr;
 		}
-		static void allocate(NGLPoint<T> &p) 
+		static void allocate(NGLPoint<T> &p)
 		{
 			p.data = static_cast<T*>( new T[D] );
 		}
-		static void deallocate(NGLPoint<T> &p) 
+		static void deallocate(NGLPoint<T> &p)
 		{
 			delete p.data;
 		}
-		inline static T distanceL2(NGLPoint<T> &a, NGLPoint<T> &b) 
+		inline static T distanceL2(NGLPoint<T> &a, NGLPoint<T> &b)
 		{
 			return sqrt(distanceL2sqr(a,b));
 		}
-		inline static T distanceL2sqr(NGLPoint<T> &a, NGLPoint<T> &b) 
+		inline static T distanceL2sqr(NGLPoint<T> &a, NGLPoint<T> &b)
 		{
 			T dis2 = 0;
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				dis2+=(a[k] - b[k])*(a[k] - b[k]);
 			}
 			return dis2;
 		}
-		static T distanceL0(NGLPoint<T> &a, NGLPoint<T> &b) 
+		static T distanceL0(NGLPoint<T> &a, NGLPoint<T> &b)
 		{
 				return -1;
 		}
-		static T distanceLinf(NGLPoint<T> &a, NGLPoint<T> &b) 
+		static T distanceLinf(NGLPoint<T> &a, NGLPoint<T> &b)
 		{
 			return -1;
 		}
-		inline static void add(NGLPoint<T> &a, NGLPoint<T> &b, NGLPoint<T> &c) 
+		inline static void add(NGLPoint<T> &a, NGLPoint<T> &b, NGLPoint<T> &c)
 		{
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				c[k] = a[k] + b[k];
 			}
 		}
-		inline static void subtract(NGLPoint<T> &a, NGLPoint<T> &b, NGLPoint<T> &c) 
+		inline static void subtract(NGLPoint<T> &a, NGLPoint<T> &b, NGLPoint<T> &c)
 		{
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				c[k] = a[k] - b[k];
 			}
 		}
-		inline static T dot(NGLPoint<T> &a, NGLPoint<T> &b) 
+		inline static T dot(NGLPoint<T> &a, NGLPoint<T> &b)
 		{
 			T res = 0;
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				res+=a[k]*b[k];
 			}
 			return res;
 		}
-		inline static T normalize(NGLPoint<T> &a) 
+		inline static T normalize(NGLPoint<T> &a)
 		{
 			T adota = dot(a,a);
 			T lena = sqrt(adota);
 			if(lena>0) {
-				for(unsigned int k=0;k<D;k++) 
+				for(unsigned int k=0;k<D;k++)
 				{
 					a[k]/=lena;
 				}
 			}
 			return lena;
 		}
-		inline static void set(NGLPoint<T> &dst, NGLPoint<T> &src) 
+		inline static void set(NGLPoint<T> &dst, NGLPoint<T> &src)
 		{
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				dst[k] = src[k];
 			}
 		}
-		inline static void set(NGLPoint<T> &dst, T*src) 
+		inline static void set(NGLPoint<T> &dst, T*src)
 		{
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				dst[k] = src[k];
 			}
 		}
-		inline static void muladd(NGLPoint<T> &a, NGLPoint<T> &b, T t, 
-                              NGLPoint<T> &c) 
+		inline static void muladd(NGLPoint<T> &a, NGLPoint<T> &b, T t,
+                              NGLPoint<T> &c)
 		{
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				c[k] = a[k] + t*b[k];
 			}
 		}
-		inline static void interpolate(NGLPoint<T> &a, NGLPoint<T> &b, T t, 
-                                   NGLPoint<T> &c) 
+		inline static void interpolate(NGLPoint<T> &a, NGLPoint<T> &b, T t,
+                                   NGLPoint<T> &c)
 		{
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				c[k] = (1-t)*a[k] + t*b[k];
 			}
 		}
-		inline static void mul(NGLPoint<T> &a, T x, NGLPoint<T> &b) 
+		inline static void mul(NGLPoint<T> &a, T x, NGLPoint<T> &b)
 		{
-			for(unsigned int k=0;k<D;k++) 
+			for(unsigned int k=0;k<D;k++)
 			{
 				b[k] = a[k]*x;
 			}
 		}
-		
+
 	};
-	
+
 	/*
 	template<class T>
 	struct NGL
