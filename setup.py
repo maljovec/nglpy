@@ -97,7 +97,6 @@ setup(
             extra_compile_args=[
                 "-std=c++11",
                 "-O3",
-                "-march=native",
                 *extra_compile_args,
             ],
             extra_link_args=extra_link_args,
