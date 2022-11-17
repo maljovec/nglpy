@@ -32,10 +32,12 @@ jobs:
       - name: Build wheels
         run: |
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          make
           python -m cibuildwheel --output-dir wheelhouse
       - name: Build source distribution
         run: |
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+          make
           python setup.py sdist
       - name: Publish wheels to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
