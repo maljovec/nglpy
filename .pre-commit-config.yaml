@@ -41,7 +41,7 @@ repos:
         require_serial: true # use require_serial so that script is only called once per commit
       - id: isort
         name: isort
-        entry: "python3 -c 'import sys; print(sys.executable)' && isort --settings-path=pyproject.toml"
+        entry: "isort --settings-path=pyproject.toml"
         language: system
         types: [python]
         require_serial: true
