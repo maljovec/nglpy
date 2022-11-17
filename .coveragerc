@@ -1,3 +1,10 @@
+[paths]
+source =
+    nglpy/
+    /Users/runner/work/nglpy/nglpy/nglpy/
+    /home/runner/work/nglpy/nglpy/samnglpyply/
+    D:\a\nglpy\nglpy\nglpy\
+
 [run]
 branch = True
 omit =
