@@ -5,11 +5,10 @@ import nglpy
 
 
 class TestPrebuiltGraph(unittest.TestCase):
-    """ Class for testing the pre-built graph
-    """
+    """Class for testing the pre-built graph"""
 
     def setup(self):
-        """ Setup function will create a fixed point set and parameter
+        """Setup function will create a fixed point set and parameter
         settings for testing different aspects of this library.
 
         Test graph shape:
@@ -28,25 +27,18 @@ class TestPrebuiltGraph(unittest.TestCase):
             [0.462382, 0.666667],
             [0.504702, 0.5],
         ]
-        self.edges = [(0, 1),
-                      (1, 2),
-                      (1, 4),
-                      (2, 3)]
+        self.edges = [(0, 1), (1, 2), (1, 4), (2, 3)]
 
     def test_neighbors(self):
-        """ Tests the neighbors function in both settings, that is where
-            an index is supplied and when it is not. This does not use
-            an input neighborhood graph, thus NGL must prune the
-            complete graph in this case.
+        """Tests the neighbors function in both settings, that is where
+        an index is supplied and when it is not. This does not use
+        an input neighborhood graph, thus NGL must prune the
+        complete graph in this case.
         """
         self.setup()
         graph_rep = nglpy.PrebuiltGraph(edges=self.edges)
         graph_rep.build(self.points)
-        expected_graph = {0: (1, ),
-                          1: (0, 2, 4),
-                          2: (1, 3),
-                          3: (2, ),
-                          4: (1, )}
+        expected_graph = {0: (1,), 1: (0, 2, 4), 2: (1, 3), 3: (2,), 4: (1,)}
 
         for i in range(len(self.points)):
             expected = list(expected_graph[i])

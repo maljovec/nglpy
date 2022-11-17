@@ -11,20 +11,14 @@ from nglpy import utils
 
 
 class EmptyRegionGraph(nglGraph):
-    """ A neighborhood graph that represents the connectivity of a given
+    """A neighborhood graph that represents the connectivity of a given
     data matrix.
 
     Attributes:
         None
     """
 
-    def __init__(self,
-                 *,
-                 max_neighbors=-1,
-                 relaxed=False,
-                 beta=1,
-                 p=2.0,
-                 **kwargs):
+    def __init__(self, *, max_neighbors=-1, relaxed=False, beta=1, p=2.0, **kwargs):
         """
         Constructor for the Empty Region Graph class that takes several keyword
         only arguments and configures a Graph object that can be applied to
@@ -124,9 +118,7 @@ class EmptyRegionGraph(nglGraph):
             # As seen here: https://bit.ly/1pUtpLh
             seen = set()
             pairs = [
-                x
-                for x in pairs
-                if not (x in seen or x[::-1] in seen or seen.add(x))
+                x for x in pairs if not (x in seen or x[::-1] in seen or seen.add(x))
             ]
             edgeList = []
             for edge in pairs:
@@ -151,7 +143,7 @@ class EmptyRegionGraph(nglGraph):
         )
 
     def neighbors(self, idx=None):
-        """ Returns the list of neighbors associated to a particular
+        """Returns the list of neighbors associated to a particular
             index in the dataset, if one is provided, otherwise a full
             dictionary is provided relating each index to a set of
             connected indices.
