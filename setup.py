@@ -9,8 +9,8 @@ import sys
 from setuptools import Extension, setup
 
 requirements = open("requirements.txt").read().strip().split("\n")
-extra_compile_args = []
-extra_link_args = []
+extra_compile_args = []  # type: ignore
+extra_link_args = []  # type: ignore
 if sys.platform == "darwin":
     extra_compile_args = ["-stdlib=libc++"]
     extra_link_args = ["-stdlib=libc++"]
