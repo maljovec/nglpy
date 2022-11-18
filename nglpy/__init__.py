@@ -2,7 +2,7 @@
 
 """Top-level package for nglpy"""
 
-__author__ = """Daniel Patrick Maljovec"""
+__author__ = """Dan Maljovec"""
 __email__ = 'maljovec002@gmail.com'
 __version__ = '0.2.0'
 from .Graph import Graph
