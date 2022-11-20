@@ -104,3 +104,14 @@ venv.bak/
 
 # mypy
 .mypy_cache/
+
+# Editor temporary files
+.*.swp
+
+# Project-specific entries
+ngl_wrap.cpp
+nglpy/ngl.py
+
+
+.DS_Store
+.vscode

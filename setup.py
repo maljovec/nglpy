@@ -3,18 +3,20 @@
       implementataion of the neighborhood graph library (NGL).
 """
 
-from setuptools import setup, Extension
+from setuptools import setup
 import re
+
+requirements = open("requirements.txt").read().strip().split("\n")
 
 
 def get_property(prop, project):
     """
-        Helper function for retrieving properties from a project's
-        __init__.py file
-        @In, prop, string representing the property to be retrieved
-        @In, project, string representing the project from which we will
-        retrieve the property
-        @Out, string, the value of the found property
+    Helper function for retrieving properties from a project's
+    __init__.py file
+    @In, prop, string representing the property to be retrieved
+    @In, project, string representing the project from which we will
+    retrieve the property
+    @Out, string, the value of the found property
     """
     result = re.search(
         r'{}\s*=\s*[\'"]([^\'"]*)[\'"]'.format(prop),
@@ -27,8 +29,8 @@ VERSION = get_property("__version__", "nglpy")
 
 
 def long_description():
-    """ Reads the README.rst file and extracts the portion tagged between
-        specific LONG_DESCRIPTION comment lines.
+    """Reads the README.rst file and extracts the portion tagged between
+    specific LONG_DESCRIPTION comment lines.
     """
     description = ""
     recording = False
@@ -57,9 +59,7 @@ setup(
     license="BSD",
     test_suite="nglpy.tests",
     url="https://github.com/maljovec/nglpy",
-    download_url="https://github.com/maljovec/nglpy/archive/"
-    + VERSION
-    + ".tar.gz",
+    download_url="https://github.com/maljovec/nglpy/archive/" + VERSION + ".tar.gz",
     keywords=[
         "geometry",
         "neighborhood",
@@ -79,6 +79,6 @@ setup(
         "Programming Language :: Python :: 3",
         "Topic :: Scientific/Engineering :: Mathematics",
     ],
-    install_requires=["numpy", "scipy", "scikit-learn"],
+    install_requires=requirements,
     python_requires=">=2.7, <4",
 )

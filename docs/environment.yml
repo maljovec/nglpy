@@ -1,0 +1,6 @@
+name: nglpy-docs
+dependencies:
+  - scipy
+  - numpy
+  - scikit-learn
+  - swig

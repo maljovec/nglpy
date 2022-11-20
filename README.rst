@@ -72,10 +72,8 @@ Then you can use the library from python such as the example below::
     max_neighbors = 9
     beta = 1
 
-    # TODO: Make this an enum, remove hard-coding
-    graph_type = 'beta skeleton'
-
-    aGraph = nglpy.Graph(point_set, graph_type, max_neighbors, beta)
+    aGraph = nglpy.EmptyRegionGraph(max_neighbors=max_neighbors, relaxed=False, beta=beta)
+    aGraph.build(point_set)
 
     aGraph.neighbors()
 
