@@ -4,22 +4,20 @@
     Neighborhood Graph Library (NGL) originally developed by Carlos
     Correa.
 """
-from .ngl import nglGraph, vectorInt, vectorDouble
-
 from nglpy import utils
+
+from .ngl import nglGraph, vectorDouble, vectorInt
 
 
 class PrebuiltGraph(nglGraph):
-    """ A neighborhood graph that represents the connectivity of a given
+    """A neighborhood graph that represents the connectivity of a given
     data matrix.
 
     Attributes:
         None
     """
 
-    def __init__(self,
-                 edges=None,
-                 **kwargs):
+    def __init__(self, edges=None, **kwargs):
         """
         Constructor for the Prebuilt Graph class that takes a list of edges
         and as such should only be used for one dataset.
@@ -52,9 +50,7 @@ class PrebuiltGraph(nglGraph):
         # As seen here: https://bit.ly/1pUtpLh
         seen = set()
         pairs = [
-            x
-            for x in self.edges
-            if not (x in seen or x[::-1] in seen or seen.add(x))
+            x for x in self.edges if not (x in seen or x[::-1] in seen or seen.add(x))
         ]
         edgeList = []
         for edge in pairs:
@@ -74,7 +70,7 @@ class PrebuiltGraph(nglGraph):
         )
 
     def neighbors(self, idx=None):
-        """ Returns the list of neighbors associated to a particular
+        """Returns the list of neighbors associated to a particular
             index in the dataset, if one is provided, otherwise a full
             dictionary is provided relating each index to a set of
             connected indices.

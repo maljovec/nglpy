@@ -2,15 +2,15 @@
     when using the beta skeleton graph type
 """
 import unittest
+
 import nglpy
 
 
 class TestBSkeleton(unittest.TestCase):
-    """ Class for testing the Gabriel graph
-    """
+    """Class for testing the Gabriel graph"""
 
     def setup(self):
-        """ Setup function will create a fixed point set and parameter
+        """Setup function will create a fixed point set and parameter
         settings for testing different aspects of this library.
 
         Test graph shape:
@@ -56,17 +56,19 @@ class TestBSkeleton(unittest.TestCase):
         self.edges = [0, 1, 0, 2, 0, 3, 0, 4, 1, 3, 1, 4, 2, 3, 2, 4, 3, 4]
 
     def test_neighbors(self):
-        """ Tests the neighbors function in both settings, that is where
-            an index is supplied and when it is not. This does not use
-            an input neighborhood graph, thus NGL must prune the
-            complete graph in this case.
+        """Tests the neighbors function in both settings, that is where
+        an index is supplied and when it is not. This does not use
+        an input neighborhood graph, thus NGL must prune the
+        complete graph in this case.
         """
         self.setup()
-        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=self.max_neighbors,
-                                           beta=self.beta,
-                                           relaxed=self.relaxed,
-                                           p=self.p,
-                                           discrete_steps=self.discrete_steps)
+        graph_rep = nglpy.EmptyRegionGraph(
+            max_neighbors=self.max_neighbors,
+            beta=self.beta,
+            relaxed=self.relaxed,
+            p=self.p,
+            discrete_steps=self.discrete_steps,
+        )
         graph_rep.build(self.points)
         expected_graph = {0: (1,), 1: (0, 2, 4), 2: (1, 3), 3: (2,), 4: (1,)}
 
@@ -113,17 +115,19 @@ class TestBSkeleton(unittest.TestCase):
     #     self.assertEqual(graph_rep.neighbors(), expected_graph)
 
     def test_RelaxedNeighborhood(self):
-        """ Tests the neighbors function in both settings, that is where
-            an index is supplied and when it is not. This does not use
-            an input neighborhood graph, thus NGL must prune the
-            complete graph in this case.
+        """Tests the neighbors function in both settings, that is where
+        an index is supplied and when it is not. This does not use
+        an input neighborhood graph, thus NGL must prune the
+        complete graph in this case.
         """
         self.setup()
-        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=0,
-                                           beta=self.beta,
-                                           relaxed=True,
-                                           p=self.p,
-                                           discrete_steps=self.discrete_steps)
+        graph_rep = nglpy.EmptyRegionGraph(
+            max_neighbors=0,
+            beta=self.beta,
+            relaxed=True,
+            p=self.p,
+            discrete_steps=self.discrete_steps,
+        )
         graph_rep.build(self.points)
         expected_graph = {
             0: (1, 3),
@@ -143,15 +147,17 @@ class TestBSkeleton(unittest.TestCase):
         self.assertEqual(graph_rep.neighbors(), expected_graph)
 
     def test_empty(self):
-        """ Tests handling of empty data, we just want to make sure nothing
-            breaks terribly.
+        """Tests handling of empty data, we just want to make sure nothing
+        breaks terribly.
         """
         self.setup()
-        graph_rep = nglpy.EmptyRegionGraph(max_neighbors=self.max_neighbors,
-                                           beta=self.beta,
-                                           relaxed=True,
-                                           p=self.p,
-                                           discrete_steps=self.discrete_steps)
+        graph_rep = nglpy.EmptyRegionGraph(
+            max_neighbors=self.max_neighbors,
+            beta=self.beta,
+            relaxed=True,
+            p=self.p,
+            discrete_steps=self.discrete_steps,
+        )
         graph_rep.build([])
         expected_graph = {}
 

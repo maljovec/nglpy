@@ -28,9 +28,9 @@ def consume_extra_args(fail_on_missing=False, **kwargs):
 
     """
     for kw in kwargs:
-        msg = f'Warning: the current version of nglpy does not accept {kw}. '
+        msg = f"Warning: the current version of nglpy does not accept {kw}. "
         if fail_on_missing:
             raise NotImplementedError(msg)
         else:
-            msg += 'It will be ignored.'
+            msg += "It will be ignored."
             warnings.warn(msg, UserWarning, stacklevel=3)
