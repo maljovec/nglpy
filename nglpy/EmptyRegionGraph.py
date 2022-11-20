@@ -8,10 +8,10 @@ import sklearn.neighbors
 
 from nglpy import utils
 
-from .ngl import nglGraph, vectorDouble, vectorInt
+from Graph import Graph
 
 
-class EmptyRegionGraph(nglGraph):
+class EmptyRegionGraph(Graph):
     """A neighborhood graph that represents the connectivity of a given
     data matrix.
 
@@ -125,7 +125,6 @@ class EmptyRegionGraph(nglGraph):
             for edge in pairs:
                 edgeList.append(edge[0])
                 edgeList.append(edge[1])
-            edges = vectorInt(edgeList)
 
         if self.relaxed:
             graph = "relaxed beta skeleton"
@@ -133,13 +132,13 @@ class EmptyRegionGraph(nglGraph):
             graph = "beta skeleton"
 
         super(EmptyRegionGraph, self).__init__(
-            vectorDouble(flattened_X),
+            flattened_X,
             rows,
             cols,
             graph,
             self.max_neighbors,
             self.beta,
-            edges,
+            edgeList,
             False,
         )
 

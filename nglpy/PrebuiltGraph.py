@@ -6,7 +6,7 @@
 """
 from nglpy import utils
 
-from .ngl import nglGraph, vectorDouble, vectorInt
+from Graph import Graph
 
 
 class PrebuiltGraph(nglGraph):
@@ -56,17 +56,9 @@ class PrebuiltGraph(nglGraph):
         for edge in pairs:
             edgeList.append(int(edge[0]))
             edgeList.append(int(edge[1]))
-        edges = vectorInt(edgeList)
 
         super(PrebuiltGraph, self).__init__(
-            vectorDouble(flattened_X),
-            rows,
-            cols,
-            "none",
-            rows,
-            0,
-            edges,
-            False,
+            flattened_X, rows, cols, "none", rows, 0, edgeList, False
         )
 
     def neighbors(self, idx=None):
