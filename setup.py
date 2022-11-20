@@ -92,7 +92,7 @@ setup(
     python_requires=">=2.7, <4",
     ext_modules=[
         Extension(
-            "_ngl",
+            "nglpy._ngl",
             FILES,
             extra_compile_args=[
                 "-std=c++11",
