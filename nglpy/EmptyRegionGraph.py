@@ -104,7 +104,7 @@ class EmptyRegionGraph(nglGraph):
             # python for a fully connected graph
             edges = vectorInt()
         else:
-            knn = sklearn.neighbors.NearestNeighbors(self.max_neighbors)
+            knn = sklearn.neighbors.NearestNeighbors(n_neighbors=self.max_neighbors)
             knn.fit(X)
             edges = knn.kneighbors(X, return_distance=False)
 
