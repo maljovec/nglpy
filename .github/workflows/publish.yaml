@@ -21,6 +21,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
 
   build_wheels:
+    needs: push_tag
     name: Build wheels on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -44,6 +45,7 @@ jobs:
           path: ./wheelhouse/*.whl
 
   publish:
+    needs: build_wheels
     name: Publish Wheels and Source Distribution
     runs-on: ubuntu-latest
     steps:
