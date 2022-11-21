@@ -61,6 +61,8 @@ jobs:
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
           make
           python setup.py sdist -d wheelhouse
+      - run: ls -R
+        working-directory: ./wheelhouse
       - name: Publish wheels to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
