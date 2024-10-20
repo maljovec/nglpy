@@ -1,6 +1,7 @@
 """ This module will test the functionality of nglpy.EmptyRegionGraph
     when using the beta skeleton graph type
 """
+
 import unittest
 
 import nglpy
