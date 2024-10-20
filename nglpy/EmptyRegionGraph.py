@@ -4,6 +4,7 @@
     Neighborhood Graph Library (NGL) originally developed by Carlos
     Correa.
 """
+
 import sklearn.neighbors
 
 from nglpy import utils
