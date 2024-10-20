@@ -10,8 +10,8 @@ jobs:
         minor_version: [9, 10, 11, 12, 13]
         os: [ubuntu-latest, windows-latest, macos-latest]
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-python@v3
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
         with:
           python-version: 3.${{ matrix.minor_version }}
       - name: update pip
@@ -24,10 +24,6 @@ jobs:
         if: runner.os == 'macOS'
       - run: make
       - run: tox -e py3${{ matrix.minor_version }}
-      - run: ls -a
-        if: runner.os != 'Windows'
-      - run: pwd
-        if: runner.os != 'Windows'
       - uses: actions/upload-artifact@v4
         with:
           name: coverage.${{ matrix.os }}.py3${{ matrix.minor_version }}
@@ -37,7 +33,7 @@ jobs:
     needs: tests
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - uses: actions/download-artifact@v4
         with:
           path: .
