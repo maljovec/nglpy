@@ -46,7 +46,7 @@ setup(
     long_description=long_description(),
     test_suite="nglpy.tests",
     install_requires=requirements,
-    python_requires=">=2.7, <4",
+    python_requires=">=3.9, <4",
     ext_modules=[
         Extension(
             "nglpy._ngl",
