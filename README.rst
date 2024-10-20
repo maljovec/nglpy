@@ -6,12 +6,23 @@ nglpy
 
 .. image:: https://img.shields.io/pypi/v/nglpy.svg
         :target: https://pypi.python.org/pypi/nglpy
-        :alt: PyPi
-.. image:: https://travis-ci.org/maljovec/nglpy.svg?branch=master
-        :target: https://travis-ci.org/maljovec/nglpy
-        :alt: Travis-CI
-.. image:: https://coveralls.io/repos/github/maljovec/nglpy/badge.svg?branch=master
-        :target: https://coveralls.io/github/maljovec/nglpy?branch=master
+        :alt: Latest Version on PyPI
+.. image:: https://img.shields.io/pypi/dm/nglpy.svg?label=PyPI%20downloads
+        :target: https://pypi.org/project/nglpy/
+        :alt: PyPI downloads
+
+.. image:: https://github.com/maljovec/nglpy/actions/workflows/quality.yaml/badge.svg?branch=main
+        :target: https://github.com/maljovec/nglpy/actions
+        :alt: Code Quality Test Results
+.. image:: https://github.com/maljovec/nglpy/actions/workflows/test.yaml/badge.svg?branch=main
+        :target: https://github.com/maljovec/nglpy/actions
+        :alt: Test Suite Results
+
+.. image:: https://www.codefactor.io/repository/github/maljovec/nglpy/badge
+        :target: https://www.codefactor.io/repository/github/maljovec/nglpy
+        :alt: CodeFactor
+.. image:: https://coveralls.io/repos/github/maljovec/nglpy/badge.svg?branch=main
+        :target: https://coveralls.io/github/maljovec/nglpy?branch=main
         :alt: Coveralls
 .. image:: https://readthedocs.org/projects/nglpy/badge/?version=latest
         :target: https://nglpy.readthedocs.io/en/latest/?badge=latest
@@ -19,6 +30,16 @@ nglpy
 .. image:: https://pyup.io/repos/github/maljovec/nglpy/shield.svg
         :target: https://pyup.io/repos/github/maljovec/nglpy/
         :alt: Pyup
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+        :target: https://github.com/psf/black
+        :alt: This code is formatted in black
+.. image:: https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336
+        :target: https://pycqa.github.io/isort/
+        :alt: This code has its imports sorted with isort
+.. image:: https://img.shields.io/badge/License-BSD_3--Clause-blue.svg
+        :target: https://opensource.org/licenses/BSD-3-Clause
+        :alt: BSD 3-Clause License
 
 .. end_badges
 

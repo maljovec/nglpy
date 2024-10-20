@@ -13,15 +13,17 @@
 # All configuration values have a default; values that are commented out
 # serve to show the default.
 
+import os
+import subprocess
+import sys
+
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 #
 from mock import Mock
-import os
-import sys
-import subprocess
-sys.path.insert(0, os.path.abspath('..'))
+
+sys.path.insert(0, os.path.abspath(".."))
 
 
 # Mock things for readthedoc build
@@ -31,7 +33,7 @@ class MyMock(Mock):
         return MyMock()
 
 
-MOCK_MODULES = ['_ngl']
+MOCK_MODULES = ["_ngl"]
 sys.modules.update((mod_name, MyMock()) for mod_name in MOCK_MODULES)
 
 # -- General configuration ------------------------------------------------
@@ -43,9 +45,7 @@ sys.modules.update((mod_name, MyMock()) for mod_name in MOCK_MODULES)
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ['sphinx.ext.autodoc',
-              'sphinx.ext.napoleon',
-              'sphinx.ext.viewcode']
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx.ext.viewcode"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
@@ -182,5 +182,5 @@ texinfo_documents = [
     )
 ]
 
-os.chdir('..')
-subprocess.call('make')
+os.chdir("..")
+subprocess.call("make")

@@ -74,7 +74,7 @@ void UnionFind::Union(int x, int y)
   if( xRoot == yRoot)
     return;
 
-  if( sets[xRoot]->rank < sets[yRoot]->rank 
+  if( sets[xRoot]->rank < sets[yRoot]->rank
    || (sets[xRoot]->rank < sets[yRoot]->rank && xRoot < yRoot) )
   {
     sets[xRoot]->parent = yRoot;

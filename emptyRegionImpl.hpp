@@ -30,7 +30,7 @@
 #define NGLIMPLHPP
 #include "ngl.hpp"
 
-namespace ngl 
+namespace ngl
 {
   //
   // Pass through empty region test for getting the ANN
@@ -63,31 +63,31 @@ namespace ngl
 		virtual void initialize()
 		{
 		}
-		virtual void destroy() 
+		virtual void destroy()
 		{
 		}
-		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r) 
+		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r)
 		{
 			T d1 = Geometry<T>::distanceL2sqr(r, edge.p);
 			T d2 = Geometry<T>::distanceL2sqr(r, edge.q);
 			return std::max(d2 - edge.len2, d1 - edge.len2);
 		}
 	};
-	
+
 	//
 	// Gabriel
 	//
 	template<typename T>
-	class Gabriel: public EmptyRegionTest<T> 
+	class Gabriel: public EmptyRegionTest<T>
 	{
 	public:
 		virtual void initialize()
 		{
 		}
-		virtual void destroy() 
+		virtual void destroy()
 		{
 		}
-		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r) 
+		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r)
 		{
 			T d1 = Geometry<T>::distanceL2sqr(r, edge.midpoint);
 			return d1 - edge.radius2;
@@ -98,14 +98,14 @@ namespace ngl
 	// Elliptic Gabriel
 	//
 	template<typename T>
-	class EllipticGabriel: public EmptyRegionTest<T> 
+	class EllipticGabriel: public EmptyRegionTest<T>
 	{
 		NGLPoint<T> rp;
 		NGLPoint<T> qp;
 		NGLPoint<T> proj;
 		T ratio;
 	public:
-		EllipticGabriel(float ratio) 
+		EllipticGabriel(float ratio)
 		{
 			this->ratio = ratio;
 		}
@@ -115,13 +115,13 @@ namespace ngl
 			Geometry<T>::allocate(qp);
 			Geometry<T>::allocate(proj);
 		}
-		virtual void destroy() 
+		virtual void destroy()
 		{
 			Geometry<T>::deallocate(rp);
 			Geometry<T>::deallocate(qp);
 			Geometry<T>::deallocate(proj);
 		}
-		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r) 
+		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r)
 		{
 			T axis1sqr = 1.0;
 			T axis2sqr = ratio*ratio;
@@ -129,26 +129,26 @@ namespace ngl
 			Geometry<T>::subtract(edge.q, edge.p, qp);
 			T t = Geometry<T>::dot(rp,qp)/Geometry<T>::dot(qp,qp);
 			Geometry<T>::interpolate(edge.p, edge.q, t, proj);
-			T dpsqr = 
-				Geometry<T>::distanceL2sqr(proj, edge.midpoint)/axis1sqr + 
+			T dpsqr =
+				Geometry<T>::distanceL2sqr(proj, edge.midpoint)/axis1sqr +
 				Geometry<T>::distanceL2sqr(proj, r)/axis2sqr;
 			return dpsqr - edge.radius2;
 		}
 	};
-	
-	
+
+
 	//
 	// Lune-based beta-skeleton
 	//
 	template<typename T>
-	class BSkeleton: public EmptyRegionTest<T> 
+	class BSkeleton: public EmptyRegionTest<T>
 	{
 		NGLPoint<T> rp;
 		NGLPoint<T> qp;
 		NGLPoint<T> proj;
 		T beta;
 	public:
-		BSkeleton(float beta) 
+		BSkeleton(float beta)
 		{
 			this->beta = beta;
 		}
@@ -158,13 +158,13 @@ namespace ngl
 			Geometry<T>::allocate(qp);
 			Geometry<T>::allocate(proj);
 		}
-		virtual void destroy() 
+		virtual void destroy()
 		{
 			Geometry<T>::deallocate(rp);
 			Geometry<T>::deallocate(qp);
 			Geometry<T>::deallocate(proj);
 		}
-		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r) 
+		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r)
 		{
 			if(beta<1.0) {
 				T r2 = edge.radius2/(beta*beta);
@@ -175,7 +175,7 @@ namespace ngl
 				Geometry<T>::subtract(edge.q, edge.p, qp);
 				T t = Geometry<T>::dot(rp,qp)/Geometry<T>::dot(qp,qp);
 				Geometry<T>::interpolate(edge.p, edge.q, t, proj);
-				
+
 				T dproj = sqrt(Geometry<T>::distanceL2sqr(r, proj));
 				T dprojmidsqr = (Geometry<T>::distanceL2sqr(proj, edge.midpoint));
 				T d2 = dprojmidsqr + (dproj + delta)*(dproj + delta);
@@ -188,25 +188,25 @@ namespace ngl
 				T r2 = edge.radius2*beta*beta;
 				T d1 = Geometry<T>::distanceL2sqr(r, c1);
 				T d2 = Geometry<T>::distanceL2sqr(r, c2);
-				
+
 				return std::max(d2-r2, d1-r2);
 			}
 		}
 	};
-	
-	
+
+
 	//
 	// Diamond
 	//
 	template<typename T>
-	class Diamond: public EmptyRegionTest<T> 
+	class Diamond: public EmptyRegionTest<T>
 	{
 		NGLPoint<T> rp;
 		NGLPoint<T> qp;
 		NGLPoint<T> rq;
 		T ratio;
 	public:
-		Diamond(float ratio) 
+		Diamond(float ratio)
 		{
 			this->ratio = ratio;
 		}
@@ -216,18 +216,18 @@ namespace ngl
 			Geometry<T>::allocate(qp);
 			Geometry<T>::allocate(rq);
 		}
-		virtual void destroy() 
+		virtual void destroy()
 		{
 			Geometry<T>::deallocate(rp);
 			Geometry<T>::deallocate(qp);
 			Geometry<T>::deallocate(rq);
 		}
-		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r) 
+		virtual T contains(EdgeInfo<T> &edge, NGLPoint<T> &r)
 		{
 			Geometry<T>::subtract(r, edge.p, rp);
 			Geometry<T>::subtract(r, edge.q, rq);
 			Geometry<T>::subtract(edge.q, edge.p, qp);
-			
+
 			T num1 = Geometry<T>::dot(rp,qp)*fabs(Geometry<T>::dot(rp,qp));
 			T den1 = Geometry<T>::dot(qp,qp)*Geometry<T>::dot(rp,rp);
 
@@ -237,23 +237,23 @@ namespace ngl
 			return ratio*ratio - std::min(num1/den1, num2/den2);
 		}
 	};
-	
+
 	template<typename T>
-	void generalERgraph(NGLPointSet<T> &points, IndexType **indices, 
-                      int &numEdges, NGLParams<T> params, 
+	void generalERgraph(NGLPointSet<T> &points, IndexType **indices,
+                      int &numEdges, NGLParams<T> params,
                       EmptyRegionTest<T> *method)
 	{
 		assert(method);
 		EmptyRegionMethod<T> *m = new EmptyRegionMethod<T>(method);
-		points.initialize(params);		
+		points.initialize(params);
 		m->initialize();
 		m->getNeighborGraph(points, indices, numEdges);
 		delete m;
 	}
 
 	template<typename T>
-	void getGabrielGraph(NGLPointSet<T> &points, IndexType **indices, 
-                       int &numEdges, NGLParams<T> params) 
+	void getGabrielGraph(NGLPointSet<T> &points, IndexType **indices,
+                       int &numEdges, NGLParams<T> params)
 	{
 		EmptyRegionTest<T> *method = new Gabriel<T>();
 		method->initialize();
@@ -263,7 +263,7 @@ namespace ngl
 	}
 
 	template<typename T>
-	void getRelativeNeighborGraph(NGLPointSet<T> &points, IndexType **indices, 
+	void getRelativeNeighborGraph(NGLPointSet<T> &points, IndexType **indices,
                                 int &numEdges, NGLParams<T> params)
 	{
 		EmptyRegionTest<T> *method = new RelativeNeighbor<T>();
@@ -272,9 +272,9 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
 	template<typename T>
-	void getBSkeleton(NGLPointSet<T> &points, IndexType **indices, int &numEdges, 
+	void getBSkeleton(NGLPointSet<T> &points, IndexType **indices, int &numEdges,
                     NGLParams<T> params)
 	{
 		EmptyRegionTest<T> *method = new BSkeleton<T>(params.param1);
@@ -283,7 +283,7 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
 	template<typename T>
 	void getEllipticGabrielGraph(NGLPointSet<T> &points, IndexType **indices,
                                int &numEdges, NGLParams<T> params)
@@ -294,7 +294,7 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
 	template<typename T>
 	void getDiamondGraph(NGLPointSet<T> &points, IndexType **indices,
                        int &numEdges, NGLParams<T> params)
@@ -305,7 +305,7 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
 	template<typename T>
 	void generalRelaxedERgraph(NGLPointSet<T> &points, IndexType **indices,
                              int &numEdges, NGLParams<T> params,
@@ -313,15 +313,15 @@ namespace ngl
 	{
 		assert(method);
 		RelaxedEmptyRegionMethod<T> *m = new RelaxedEmptyRegionMethod<T>(method);
-		points.initialize(params);		
+		points.initialize(params);
 		m->initialize();
 		m->getNeighborGraph(points, indices, numEdges);
 		delete m;
 	}
-	
+
 	template<typename T>
 	void getRelaxedGabrielGraph(NGLPointSet<T> &points, IndexType **indices,
-                              int &numEdges, NGLParams<T> params) 
+                              int &numEdges, NGLParams<T> params)
 	{
 		EmptyRegionTest<T> *method = new Gabriel<T>();
 		method->initialize();
@@ -329,7 +329,7 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
 	template<typename T>
 	void getRelaxedRelativeNeighborGraph(NGLPointSet<T> &points,
                                        IndexType **indices, int &numEdges,
@@ -341,7 +341,7 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
 	template<typename T>
 	void getRelaxedBSkeleton(NGLPointSet<T> &points, IndexType **indices,
                            int &numEdges, NGLParams<T> params)
@@ -352,7 +352,7 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
 	template<typename T>
 	void getRelaxedEllipticGabrielGraph(NGLPointSet<T> &points,
                                       IndexType **indices, int &numEdges,
@@ -364,7 +364,7 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
 	template<typename T>
 	void getRelaxedDiamondGraph(NGLPointSet<T> &points, IndexType **indices,
                               int &numEdges, NGLParams<T> params)
@@ -375,7 +375,7 @@ namespace ngl
 		method->destroy();
 		delete method;
 	}
-	
+
   template<typename T>
   void getKNNGraph(NGLPointSet<T> &points, IndexType **indices, int &numEdges,
                    NGLParams<T> params)
