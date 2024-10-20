@@ -25,9 +25,13 @@ jobs:
       - run: make
       - run: tox -e py3${{ matrix.minor_version }}
       - run: ls -a
-      - uses: actions/upload-artifact@v3
+        if: runner.os != 'Windows'
+      - run: pwd
+        if: runner.os != 'Windows'
+      - uses: actions/upload-artifact@v4
         with:
           name: coverage.${{ matrix.os }}.py3${{ matrix.minor_version }}
+          include-hidden-files: true
           path: ./.coverage.py3${{ matrix.minor_version }}
   coverage:
     needs: tests
